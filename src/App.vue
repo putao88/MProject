@@ -1,14 +1,18 @@
 <template>
-  <div id="app">
+  <div id="app" class="root">
+    <Header />
     <router-view/>
   </div>
 </template>
 
 <script>
+import Header from '@/components/Header'
 export default {
-  name: 'App'
+  name: 'App',
+  components:{ Header },
 }
 </script>
 
 <style>
+@import './styles/index.css';
 </style>

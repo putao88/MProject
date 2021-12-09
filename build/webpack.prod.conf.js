@@ -1,4 +1,3 @@
-'use strict'
 const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
@@ -12,6 +11,10 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const env = require('../config/prod.env')
+
+function resolveApp(relativePath) {
+  return path.resolve(relativePath);
+}
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -63,6 +66,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: config.build.index,
       template: 'index.html',
+      favicon: resolveApp('favicon.ico'),
       inject: true,
       minify: {
         removeComments: true,

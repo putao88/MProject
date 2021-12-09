@@ -1,4 +1,3 @@
-'use strict'
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
@@ -12,6 +11,10 @@ const portfinder = require('portfinder')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+
+function resolveApp(relativePath) {
+  return path.resolve(relativePath);
+}
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -55,6 +58,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
+      favicon: resolveApp('favicon.ico'),
       inject: true
     }),
     // copy custom static assets
