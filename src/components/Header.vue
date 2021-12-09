@@ -3,18 +3,17 @@
 
     <div class="header-left">
       <!-- 首页的头部——左边 -->
-      <!-- <div class="wallet-status-desktop">
-        <img src="@/assets/header/logo.png" class="wallet-logo" />
-        <div class="wallet-connected">
-          <h4 class="text-white p-0 m-0 text-shadow wallet-title god-font">No Wallet</h4>
-          <div class="text-uppercase btn btn-red mt-1">Connect</div>
-        </div>
-      </div> -->
       <connect-wallet />
-
     </div>
 
-    <div class="header-right">right</div>
+    <div class="header-right god-font">
+      <div style="text-align:'right'">
+        <div class="bnb-info text-white"></div>
+      </div>
+      <div style="textAlign:'right'">
+
+      </div>
+    </div>
   </div>
 </template>
 
@@ -54,5 +53,14 @@ export default {
 
 .header-right {
   display: flex;
+  justify-content: flex-end!important;
 }
+.bnb-info, .bnbh-info {
+  height: 70px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 250px;
+  padding: 10px 30px 10px 10px;
+}
+
 </style>
