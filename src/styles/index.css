@@ -1,4 +1,39 @@
 .root {
   height: 100vh;
-  background-color: #4f473e;
+}
+
+/* 背景图片 */
+.static-bg {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -2;
+    width: auto;
+    height: 100%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+@media (min-width: 700px) {
+  .static-bg {
+    width: 100%;
+  }
+}
+/* 页面标题 */
+.page-title {
+  font-family: "God Of War",serif;
+  background-image: url('~@/assets/home/hover.png');
+  background-size: 100% 100%;
+  width: 50%;
+  height: 80px;
+  font-size: 35px;
+  margin: auto;
+  --bs-text-opacity: 1;
+  color: rgba(255,255,255,1);
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }

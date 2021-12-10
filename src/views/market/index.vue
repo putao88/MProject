@@ -6,7 +6,8 @@
       alt=""
     />
     <div class="market-container">
-      <div class="market-title">MARKETPLACE</div>
+      <img class="static-bg" src="@/assets/home/myheroes-bg.jpg" alt="myheroes-background">
+      <div class="page-title">MARKETPLACE</div>
       <div class="market-header">
         <div class="list">
           <img src="@/assets/market/list.png" alt="" />
@@ -75,18 +76,7 @@ export default {
   }
   .market-container {
     padding: 10px;
-    margin-top: 160px;
-    .market-title {
-      background-image: url("~@/assets/market/header.png");
-      background-size: 100% 100%;
-      width: 50%;
-      height: 80px;
-      font-size: 35px;
-      margin: auto;
-      text-align: center;
-      line-height: 70px;
-      color: #ffffff;
-    }
+    margin-top: 100px;
     .market-header {
       display: flex;
       justify-content: space-between;
