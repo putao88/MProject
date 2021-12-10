@@ -1,13 +1,14 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-*, ::after, ::before {
-    box-sizing: border-box;
-}
 @font-face  {
     font-family: "God Of War";
     src: url("/static/font/GODOFWAR.TTF") format('truetype');
+}
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "God Of War",serif;
+}
+*, ::after, ::before {
+    box-sizing: border-box;
 }
 body {
     margin: 0;
