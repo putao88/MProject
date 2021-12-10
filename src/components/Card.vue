@@ -71,6 +71,7 @@ export default {
   padding: 5px 10px;
   width: 15%;
   min-width: 250px;
+  // box-sizing: content-box;
   font-weight: bold;
   font-family: "God Of War", serif;
   .card-top {
@@ -94,7 +95,7 @@ export default {
   .card-id {
     background-size: 100% 100%;
     height: 40px;
-    padding-top: 5px;
+    padding-top: 8px;
     text-align: center;
     color: #ffffff;
     background-image: url('../assets/market/ribbon.png');
@@ -107,6 +108,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin: 0.5rem 0;
     }
     .progress {
       flex-wrap: wrap;
@@ -123,6 +125,7 @@ export default {
           display: none;
         }
         >>> .el-progress-bar__inner {
+          border-radius: initial;
           background-image: url('../assets/market/progress.png');
         }
       }
