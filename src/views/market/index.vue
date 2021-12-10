@@ -91,7 +91,7 @@ export default {
       display: flex;
       justify-content: space-between;
       div {
-        width: 270px;
+        width: 290px;
       }
       .list {
         height: 50px;
