@@ -6,7 +6,7 @@
       <connect-wallet />
     </div>
 
-    <div class="header-right god-font">
+    <div class="header-right">
 
       <div style="text-align:right">
         <div class="bnb-info text-white">0 BNB</div>

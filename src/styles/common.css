@@ -79,6 +79,10 @@ body {
     pointer-events: none;
     opacity: .65;
 }
+.btn.disabled, .btn:disabled, fieldset:disabled .btn {
+    pointer-events: none;
+    opacity: .65;
+}
 .text-uppercase {
     text-transform: uppercase;
 }
