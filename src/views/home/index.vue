@@ -1,7 +1,7 @@
 <template>
   <div class="home-wrap">
     <!-- <home-header /> -->
-    <img class="myheroes-bg" src="@/assets/home/myheroes-bg.jpg">
+    <!-- <img class="myheroes-bg" src="@/assets/home/myheroes-bg.jpg"> -->
   </div>
 </template>
 
