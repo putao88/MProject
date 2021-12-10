@@ -5,6 +5,10 @@
 *, ::after, ::before {
     box-sizing: border-box;
 }
+@font-face  {
+    font-family: "God Of War";
+    src: url("/static/font/GODOFWAR.TTF") format('truetype');
+}
 body {
     margin: 0;
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
