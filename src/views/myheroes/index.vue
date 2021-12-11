@@ -1,5 +1,5 @@
 <template>
-  <div class="myheroes-wrap">
+  <div class="myheroes-wrap container-wrap">
     <img class="static-bg" src="@/assets/home/myheroes-bg.jpg" alt="myheroes-background">
     <div class="page-title">My Heroes</div>
     <div class="heroes-card">
@@ -31,7 +31,6 @@ export default {
 
 <style>
 .myheroes-wrap {
-  margin-top: 100px;
   width:100%;
 }
 .heroes-card {

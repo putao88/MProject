@@ -1,5 +1,5 @@
 <template>
-    <div class="myreserve-wrap">
+    <div class="myreserve-wrap container-wrap">
     <img class="static-bg" src="@/assets/myreserve/myheroes-bg.jpg" alt="myreserve-background">
     <div class="page-title">My Reserve</div>
     <div class="heroes-card">
@@ -24,15 +24,15 @@ export default {
         {key:'3',status:'lock',title:''},
         {key:'4',status:'lock',title:''},
         {key:'5',status:'lock',title:''},
-        {key:'5',status:'lock',title:''},
-        {key:'5',status:'lock',title:''},
-        {key:'5',status:'lock',title:''},
-        {key:'5',status:'lock',title:''},
-        {key:'5',status:'lock',title:''},
-        {key:'5',status:'lock',title:''},
-        {key:'5',status:'lock',title:''},
-        {key:'5',status:'lock',title:''},
-        {key:'5',status:'lock',title:''},
+        {key:'6',status:'lock',title:''},
+        {key:'7',status:'lock',title:''},
+        {key:'8',status:'lock',title:''},
+        {key:'9',status:'lock',title:''},
+        {key:'10',status:'lock',title:''},
+        {key:'11',status:'lock',title:''},
+        {key:'12',status:'lock',title:''},
+        {key:'13',status:'lock',title:''},
+        {key:'14',status:'lock',title:''},
       ]
     }
   }
@@ -41,7 +41,6 @@ export default {
 
 <style>
 .myreserve-wrap {
-  margin-top: 100px;
   width:100%;
 }
 .heroes-card {

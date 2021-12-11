@@ -1,7 +1,13 @@
 <template>
   <div class="home-wrap">
-    <!-- <home-header /> -->
-    <!-- <img class="myheroes-bg" src="@/assets/home/myheroes-bg.jpg"> -->
+    <div class="town-container">
+      <img class="town town-bg" src="@/assets/home/background.jpeg" alt="town-bg" />
+      <img class="town town-bg" src="@/assets/home/1-1.png" alt="town-bank" />
+      <img class="town town-bg" src="@/assets/home/2-1.png" alt="town-inn" />
+      <img class="town town-bg" src="@/assets/home/3-1.png" alt="town-barracs" />
+      <img class="town town-bg" src="@/assets/home/4-1.png" alt="town-ground" />
+      <img class="town town-bg" src="@/assets/home/objects.png" alt="town-objects" />
+    </div>
     <div class="home-bottom-wrap">
       <div class="home-bottom">
         <div class="menu-btns">
@@ -27,7 +33,7 @@
             <img src="@/assets/home/gitbook.png" />
           </div>
         </div>
-        <div class="btn-hero btn-fight" @click="goTo('fight')">
+        <div class="btn-hero btn-fight pe-lg-5" @click="goTo('fight')">
           <img src="@/assets/home/fight.png" />
         </div>
       </div>
@@ -37,34 +43,34 @@
 
 <script>
 export default {
-  name:'Home',
+  name: "Home",
   data() {
-    return {}
+    return {};
   },
   methods: {
     goTo(path) {
-      if (path === 'gitbook') {
-        window.open("https://bnbheroes.gitbook.io/bnbheroes/")
-        return
+      if (path === "gitbook") {
+        window.open("https://bnbheroes.gitbook.io/bnbheroes/");
+        return;
       }
-      if (path === 'upgrade') {
-        return
+      if (path === "upgrade") {
+        return;
       }
-			this.$router.push({ path: path})
+      this.$router.push({ path: path });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .home-wrap {
-  width:100%;
+  width: 100%;
   height: 100%;
   overflow: hidden;
   background-color: #4f473e;
 }
 .home-bottom-wrap {
-  width:100%;
+  width: 100%;
   position: absolute;
   bottom: 10px;
 }
@@ -83,7 +89,7 @@ export default {
 .menu-btn {
   padding: 0 10px;
   align-self: auto;
-  margin:0.25rem;
+  margin: 0.25rem;
   cursor: pointer;
   img {
     height: 120px;
@@ -91,15 +97,42 @@ export default {
 }
 .btn-hero:hover {
   margin-bottom: 15px;
-  transition: all .1s;
+  transition: all 0.1s;
 }
 .menu-btn.disabled {
   pointer-events: none;
-  opacity: .65;
+  opacity: 0.65;
 }
 .btn-fight {
   img {
-    width:150px
+    width: 150px;
+  }
+}
+.town-container {
+  left: 0;
+  right: 0;
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: inherit;
+}
+.town-container,
+.towns {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+.town {
+  z-index: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100vh;
+}
+@media (max-width: 1600px) {
+  .town {
+    width: auto;
   }
 }
 </style>

@@ -1,7 +1,9 @@
 .root {
   height: 100vh;
 }
-
+.container-wrap {
+  margin-top: 80px;
+}
 /* 背景图片 */
 .static-bg {
     position: fixed;
@@ -36,4 +38,13 @@
   align-items: center;
   justify-content: center;
   display: flex;
+}
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,.5019607843137255);
+  z-index: -1;
 }

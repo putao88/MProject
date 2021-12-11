@@ -111,3 +111,12 @@ body {
 .mt-5 {
     margin-top: 3rem;
 }
+@media (min-width: 992px) {
+    .pe-lg-5 {
+        padding-right: 3rem!important;
+    }
+}
+
+img, svg {
+    vertical-align: middle;
+}
