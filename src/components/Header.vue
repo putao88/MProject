@@ -8,7 +8,7 @@
         <div class="wallet-connected">
           <div v-if="!address">
             <h4 class="text-white p-0 m-0 text-shadow wallet-title">No Wallet</h4>
-            <div class="text-uppercase btn btn-red mt-1">Connect</div>
+            <div class="text-uppercase btn btn-red mt-1" @click="openMetamask">Connect</div>
           </div>
           <div v-if="address">
             <h4 class="text-white p-0 m-0 text-shadow wallet-title" >Wallet Connected</h4>
@@ -45,13 +45,29 @@
       </div>
 
     </div>
+
+    <el-dialog title="" :visible.sync="showMetamask"
+      :modal="false" 
+      :show-close="false" 
+      custom-class="metamaskModal" 
+      >
+      <el-card>
+        <div @click="connectMetamask" style="width:100%,height:100%">
+          <div class="web3modal-provider-container">
+            <div class="web3modal-provider-icon">
+              <img src="@/assets/header/metamask.svg" />
+            </div>
+            <div class="web3modal-provider-name">MetaMask</div>
+            <div class="web3modal-provider-description">Connect to your MetaMask Wallet</div>
+          </div>
+        </div>
+      </el-card>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { loadBlockchainData } from '../metamask'
-// import bnbPng from '@/assets/header/bnbhInfo.png'
-
 export default {
   name:'Header',
   watch:{
@@ -63,21 +79,40 @@ export default {
     return {
       page:this.$route.path,
       isConnected: true,
-      address:'0xF8b800376b959B3BBD546B75E56EA672d10744B9',
-      // address:"",
+      address:"",
+      showMetamask: false,
     }
   },
   created() {
-    loadBlockchainData()
+    // loadBlockchainData()
   },
   methods: {
     goBack() {
 			this.$router.push({ path: '/'})
+    },
+    openMetamask() {
+      this.showMetamask = true
+    },
+    connectMetamask() {
+      this.showMetamask = false
+      this.address = '0xF8b800376b959B3BBD546B75E56EA672d10744B9'
     }
   }
   
 };
 </script>
+<style>
+.metamaskModal {
+  width: 500px;
+  cursor: pointer;
+}
+.metamaskModal .el-dialog__header {
+  display:none;
+}
+.metamaskModal .el-dialog__body {
+  padding: 0px;
+}
+</style>
 
 <style lang="scss" scoped>
 .header {
@@ -154,5 +189,52 @@ export default {
 .bnbh-info {
   background-image: url('~@/assets/header/bnbhInfo.png');
 }
-
+.web3modal-provider-container {
+    transition: background-color 0.2s ease-in-out 0s;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    border-radius: 12px;
+    padding: 24px 16px;
+    .web3modal-provider-icon {
+      width: 45px;
+      height: 45px;
+      display: flex;
+      border-radius: 50%;
+      overflow: visible;
+      box-shadow: none;
+      -webkit-box-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      align-items: center;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .web3modal-provider-name {
+      text-align: center;
+      width: 100%;
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 0.5em;
+      color: rgb(12, 12, 13);
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .web3modal-provider-description {
+      text-align: center;
+      width: 100%;
+      font-size: 18px;
+      margin: 0.333em 0px;
+      color: rgb(169, 169, 188);
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+}
 </style>

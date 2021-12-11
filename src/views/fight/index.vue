@@ -1,12 +1,12 @@
 <template>
-  <div class="fight-wrap">
+  <div class="fight-wrap container-wrap">
     <img
       class="static-bg"
       src="@/assets/fight/Village.jpg"
       alt="fight-background"
     />
+    <div class="page-title">Chapter 1: Enemy at the gates</div>
     <div class="fight-body">
-      <div class="fight-title">Chapter 1: Enemy at the gates</div>
       <div class="fight-container">
         <div class="fight-tab">
           <div @click="switchTo" :class="{ active: active }">
@@ -76,7 +76,6 @@ export default {
 
 <style lang='scss' scoped>
 .fight-body {
-  margin-top: 100px;
   width: 100%;
   .fight-container {
     max-width: 850px;
