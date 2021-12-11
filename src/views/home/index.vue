@@ -38,14 +38,24 @@
         </div>
       </div>
     </div>
+    <div class="upgrade-container" v-show="showUpgrade">
+      <div class="upgrade">
+        <Upgrade @closeModel="closeModel"/>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
+import Upgrade from './upgrade'
 export default {
   name: "Home",
+  components: {Upgrade},
   data() {
-    return {};
+    return {
+      showUpgrade: false
+    };
   },
   methods: {
     goTo(path) {
@@ -54,9 +64,13 @@ export default {
         return;
       }
       if (path === "upgrade") {
-        return;
+        this.showUpgrade = true
+        return
       }
       this.$router.push({ path: path });
+    },
+    closeModel() {
+      this.showUpgrade = false
     }
   }
 };
@@ -134,5 +148,19 @@ export default {
   .town {
     width: auto;
   }
+}
+.upgrade-container {
+  width:100%;
+  height: 100vh;
+  position: relative;
+    left: 0;
+    top:0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .upgrade {
+      width: 600px;
+      position: absolute;
+    }
 }
 </style>
