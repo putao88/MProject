@@ -83,6 +83,9 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-around;
+        .arrow {
+          cursor:pointer;
+        }
         div {
             &:nth-child(2) {
                 img {

@@ -84,7 +84,7 @@ export default {
     }
   },
   created() {
-    // loadBlockchainData()
+    loadBlockchainData()
   },
   methods: {
     goBack() {

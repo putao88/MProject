@@ -1,31 +1,31 @@
 <template>
   <div class="fight-card">
-    <div class="arrow">
+    <div class="arrow" @click="previous">
         <img src="@/assets/fight/left-arrow.png" alt="">
     </div>
-    <div class="card-body">
-      <div v-if="switchOne" class="card-info">Tier 1</div>
-      <div v-if="switchOne" class="card-info">Red Skull 1</div>
+    <div class="card-body" v-if="dataSource.length">
+      <div class="card-info">Tier 1</div>
+      <div class="card-info">{{ curItem.name }}</div>
       <div class="card-img">
         <img src="@/assets/fight/card.png" alt="" />
-        <div  v-if="switchOne">
-            <p>SUCCESS CHANCE <span>67%</span></p>
+        <div>
+            <p>SUCCESS CHANCE <span style="color:rgb(10, 253, 10)">{{ curItem.power }}</span></p>
             <p>HP REQUIRED TO FIGHT</p>
             <div>
                 <img src="@/assets/fight/glod.png" alt="">
                 <div>
-                   BASE BNB<br/>0.0028215
+                   BASE BNB<br/>{{ curItem.bnbInfo }}
                 </div>
                 <img src="@/assets/fight/xp.png" alt="">
                 <div>
-                    XP<br/>110
+                    XP<br/>{{ curItem.xpInfo }}
                 </div>
             </div>
         </div>
       </div>
-      <div v-if="switchOne" class="card-bottom">FIGHT</div>
+      <div class="card-bottom">FIGHT</div>
     </div>
-    <div class="arrow">
+    <div class="arrow" @click="next">
         <img src="@/assets/fight/right-arrow.png" alt="">
     </div>
   </div>
@@ -35,9 +35,46 @@
 export default {
   name: "FightCard",
   props: {
-    switchOne: {
-      type: Boolean,
+    dataSource: {
+      type: Array,
       default: true,
+    }
+  },
+  data() {
+    return {
+      curItem: {},
+      curIndex: 0,
+    }
+  },
+  mounted() {
+    if (this.dataSource.length) {
+      this.curItem = this.dataSource[this.curIndex]
+    }
+  },
+  methods: {
+    // 上一张卡片
+    previous() {
+      let newIndex = 0
+      if (!this.dataSource.length) return
+      if (this.curIndex === 0) {
+        newIndex = this.dataSource.length - 1
+      } else {
+        newIndex = this.curIndex - 1
+      }
+      this.curIndex = newIndex
+      this.curItem = this.dataSource[newIndex]
+    },
+    // 下一张
+    next() {
+      let newIndex = 0
+      if (!this.dataSource.length) return
+      if ((this.curIndex + 1) === this.dataSource.length) {
+        newIndex = 0
+      } else {
+        newIndex = this.curIndex + 1
+      }
+      this.curIndex = newIndex
+      this.curItem = this.dataSource[newIndex]
     }
   }
 };
@@ -70,7 +107,6 @@ export default {
       }
       > div {
           position: absolute;
-          width: 260px;
           height: 120px;
           background-color: rgba(0,0,0,.6);
     border-radius: 5px;

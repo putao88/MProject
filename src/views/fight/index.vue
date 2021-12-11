@@ -1,55 +1,29 @@
 <template>
   <div class="fight-wrap container-wrap">
-    <img
-      class="static-bg"
-      src="@/assets/fight/Village.jpg"
-      alt="fight-background"
-    />
+    <img class="static-bg" src="@/assets/fight/Village.jpg" alt="fight-background" />
     <div class="page-title">Chapter 1: Enemy at the gates</div>
     <div class="fight-body">
       <div class="fight-container">
         <div class="fight-tab">
           <div @click="switchTo" :class="{ active: active }">
-            <img src="@/assets/fight/icon-tab1.png" alt="" />
+            <img src="@/assets/fight/icon-tab1.png" alt />
             <span>Basic Enemy</span>
           </div>
           <div @click="switchTo" :class="{ active: !active }">
-            <img src="@/assets/fight/icon-tab2.png" alt="" />
+            <img src="@/assets/fight/icon-tab2.png" alt />
             <span>Boss Fight</span>
           </div>
         </div>
         <div v-show="active" class="fight-block-one">
-          <div><FightCard /></div>
-          <div><FightCard /></div>
+          <div>
+            <FightCard :dataSource="tireList1" />
+          </div>
+          <div>
+            <FightCard :dataSource="tireList2" />
+          </div>
         </div>
         <div v-show="!active" class="fight-block-two">
-          <p>Boss of Chapter 1:</p>
-          <div>
-            <div class="img">
-              <FightCard :switchOne="false" />
-            </div>
-            <div class="info">
-              <p class="title">BOSS NAME: <span></span></p>
-              <div class="description">
-                <p>DESCRIPTION:</p>
-                <p class="des-info">
-                  Your squad spots ZANGRIEF at the stronghold gates charging
-                  towards them. Defeat Him in order to claim the stronghold once
-                  and for all!
-                </p>
-              </div>
-              <div class="xp-info">
-                <p>SUCCESS CHANCE <span>67%</span></p>
-                <p>HP REQUIRED TO FIGHT</p>
-                <div>
-                  <img src="@/assets/fight/glod.png" alt="" />
-                  <div>BASE BNB<br />0.0028215</div>
-                  <img src="@/assets/fight/xp.png" alt="" />
-                  <div>XP<br />110</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <BossFight  :dataSource="bossList" />
         </div>
       </div>
     </div>
@@ -57,20 +31,37 @@
 </template>
 
 <script>
-import FightCard from "@/components/FightCard";
+import FightCard from "./components/FightCard";
+import BossFight from "./components/BossFight";
 export default {
   name: "fight",
-  components: { FightCard },
+  components: { FightCard, BossFight },
   data() {
     return {
       active: true,
+      tireList1:[
+        {name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'63%',bnbInfo:0.0028200, xpInfo: 100 },
+        {name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'67%',bnbInfo:0.0028215, xpInfo: 110 },
+        {name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'70%',bnbInfo:0.00329175, xpInfo: 200 },
+      ],
+      tireList2:[
+                {name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'63%',bnbInfo:0.0028200, xpInfo: 100 },
+        {name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'67%',bnbInfo:0.0028215, xpInfo: 110 },
+        {name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'70%',bnbInfo:0.00329175, xpInfo: 200 },
+      ],
+      bossList:[
+        {name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'63%',bnbInfo:0.0028200, xpInfo: 100, description:'Your squad spots ZANGRIEF at the stronghold gates chargingtowards them. Defeat Him in order to claim the stronghold once and for all!' },
+        {name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'0%',bnbInfo:0.0028200, xpInfo: 80, description:'Your squad spots ZANGRIEF at the stronghold gates chargingtowards them. Defeat Him in order to claim the stronghold once and for all!' },
+        {name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'72%',bnbInfo:0.0028200, xpInfo: 10, description:'Your squad spots ZANGRIEF at the stronghold gates chargingtowards them. Defeat Him in order to claim the stronghold once and for all!' },
+        {name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'100%',bnbInfo:0.0028200, xpInfo: 50, description:'Your squad spots ZANGRIEF at the stronghold gates chargingtowards them. Defeat Him in order to claim the stronghold once and for all!' },
+      ],
     };
   },
   methods: {
     switchTo() {
       this.active = !this.active;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -129,59 +120,6 @@ export default {
       border-radius: 10px;
       padding: 3rem 1rem;
       color: #ffffff;
-      > p {
-        font-size: 1.75rem;
-        line-height: 50px;
-        text-align: center;
-      }
-      > div {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        .info {
-          padding: 24px;
-          text-align: left;
-          background: rgba(0, 0, 0, 0.76);
-          border-radius: 5% 5%;
-          width: 355px;
-          height: auto;
-          font-size: 1rem;
-          line-height: 24px;
-          > p {
-            &:nth-child(1) {
-              margin-bottom: 16px;
-            }
-          }
-          .description {
-            margin-bottom: 1rem;
-          }
-          .xp-info {
-            margin: auto;
-            height: 120px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 5px;
-            padding: 8px 14px;
-            font-size: 1rem;
-            line-height: 24px;
-            > p {
-              margin-bottom: 0.25rem;
-            }
-            > div {
-              height: 48px;
-              display: flex;
-              align-items: center;
-              img {
-                width: 40px;
-                height: 40px;
-                margin-right: 0.5rem;
-              }
-              > div {
-                margin-right: 1rem;
-              }
-            }
-          }
-        }
-      }
     }
   }
 }

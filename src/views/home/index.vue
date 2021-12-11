@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import Upgrade from './upgrade'
+import Upgrade from './components/upgrade'
 export default {
   name: "Home",
   components: {Upgrade},

@@ -29,7 +29,7 @@
       <div class="description">
         <div>
           <img
-            src="../assets/market/sword.png"
+            src="@/assets/market/sword.png"
             height="30px"
             alt="attack"
           />  
@@ -37,7 +37,7 @@
         </div>
         <div>
           <img
-            src="../assets/market/shield.png"
+            src="@/assets/market/shield.png"
             height="30px"
             alt="armor"
           />
@@ -45,7 +45,7 @@
         </div>
         <div>
           <img
-            src="../assets/market/shose.png"
+            src="@/assets/market/shose.png"
             height="30px"
             alt="attack"
           />
@@ -98,7 +98,7 @@ export default {
     padding-top: 8px;
     text-align: center;
     color: #ffffff;
-    background-image: url('../assets/market/ribbon.png');
+    background-image: url('~@/assets/market/ribbon.png');
   }
   .card-info {
     font-size: 1rem;
@@ -126,7 +126,7 @@ export default {
         }
         >>> .el-progress-bar__inner {
           border-radius: initial;
-          background-image: url('../assets/market/progress.png');
+          background-image: url('~@/assets/market/progress.png');
         }
       }
       div {
@@ -148,7 +148,7 @@ export default {
         background-repeat: no-repeat;
         padding: 5px 20px 8px;
         justify-content: space-around;
-        background-image: url('../assets/market/approve.png');
+        background-image: url('~@/assets/market/approve.png');
         text-transform: uppercase;
         color: #680b0c;
         margin-top: 0.5rem;
