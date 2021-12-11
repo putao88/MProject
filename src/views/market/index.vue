@@ -18,21 +18,7 @@
       </div>
       <div class="market-body">
         <!-- <template v-for="item in options"> -->
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        <Card v-for="item in cardlist" :key="item.key" />
         <!-- </template> -->
       </div>
     </div>
@@ -52,6 +38,13 @@ export default {
   components: { Card, MarketSelect, MarketPagination },
   data() {
     return {
+      cardlist:[
+        {key:'1',status:'open',title:'',content1:'Upgrade',content2:'Town Inn',content3:'to Level 2'},
+        {key:'2',status:'open',title:'',content1:'Upgrade',content2:'Town Inn',content3:'to Level 2'},
+        {key:'3',status:'lock',title:'',content1:'Upgrade',content2:'Town Inn',content3:'to Level 2'},
+        {key:'4',status:'lock',title:'',content1:'Upgrade',content2:'Town Inn',content3:'to Level 2'},
+        {key:'5',status:'lock',title:'',content1:'Upgrade',content2:'Town Inn',content3:'to Level 2'},
+      ],
       options: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     };
   },
@@ -98,9 +91,8 @@ export default {
     .market-body {
       display: flex;
       flex-wrap: wrap;
-      padding: 0 40px;
+      padding: 0 1rem;
       justify-content: center;
-      // margin-bottom: 10px;
       .card {
         margin: 10px;
       }

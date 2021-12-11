@@ -20,7 +20,7 @@
           <div class="menu-btn btn-hero" @click="goTo('market')">
             <img src="@/assets/home/market.png" />
           </div>
-          <div class="menu-btn btn-hero" @click="goTo('battlelog')">
+          <div class="menu-btn btn-hero" @click="goTo('battlelogs')">
             <img src="@/assets/home/battlelog.png" />
           </div>
           <div class="menu-btn btn-hero" @click="goTo('gitbook')">
