@@ -1,12 +1,24 @@
 import Web3 from 'web3'
 import { Message } from 'element-ui';
+import { formatUnits } from 'ethers/lib/utils'
+import store from '../store'
+
+
+
+export const getBalance = async (web3, account) => {
+  const pool = new web3.eth.Contract(poolabi, IGOAddress)
+  let balance = await pool.methods.balanceOf(account).call()
+  const display = formatUnits(balance, 18)
+  store.commit('SET_BALANCE',display)
+
+}
 
 
 export const loadBlockchainData = async () => {
-    // const state = store.getState()
-    // if (state.web3) {
-    //     return state.web3
-    // }
+    const state = store.state
+    if (JSON.stringify(state.web3) != "{}") {
+        return state.web3
+    }
     if (window.ethereum && window.ethereum.isMetaMask) {
         const web3 = new Web3(window.ethereum)
         try {
@@ -30,15 +42,9 @@ export const loadBlockchainData = async () => {
                 type: 'info'
               });
             } else {
-                // dispatch({
-                //     type: 'address',
-                //     value: accounts[0]
-                // })
-                // dispatch({
-                //     type: 'web3',
-                //     value: web3
-                // })
-                // await getBalance(web3, accounts[0])
+                store.commit('SET_ADDRESS', accounts[0])
+                store.commit('SET_WEB3', web3)
+                await getBalance(web3, accounts[0])
                 return web3
             }
           } catch (e) {

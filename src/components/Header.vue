@@ -68,21 +68,24 @@
 
 <script>
 import { loadBlockchainData } from '../metamask'
+import { mapState } from 'vuex'
 export default {
   name:'Header',
+  data(){
+    return {
+      page:this.$route.path,
+      isConnected: true,
+      showMetamask: false,
+    }
+  },
   watch:{
     $route(to,from){
       this.page = to.path
     }
   },
-  data(){
-    return {
-      page:this.$route.path,
-      isConnected: true,
-      address:"",
-      showMetamask: false,
-    }
-  },
+  computed: mapState([
+    'address'
+  ]),
   created() {
     loadBlockchainData()
   },
@@ -94,8 +97,8 @@ export default {
       this.showMetamask = true
     },
     connectMetamask() {
+      loadBlockchainData()
       this.showMetamask = false
-      this.address = '0xF8b800376b959B3BBD546B75E56EA672d10744B9'
     }
   }
   

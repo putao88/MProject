@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "element-ui": "^2.15.6",
+    "ethers": "^5.5.2",
     "next": "^10.0.7",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
+    "vuex": "^3.6.2",
     "web3": "^1.2.9"
   },
   "devDependencies": {
