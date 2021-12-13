@@ -5,15 +5,40 @@ import { formatUnits } from 'ethers/lib/utils'
 import { IGOAddress, usdtAddress} from './data'
 import usdtabi from '../abis/usdtabi'
 import poolabi from '../abis/poolabi'
+import { BigNumber } from 'ethers'
 
-
+if (window.ethereum && window.ethereum.isMetaMask) {
+  window.ethereum.on('accountsChanged', function (accounts) {
+    store.commit('SET_ADDRESS', accounts[0])
+    const state = store.getState()
+    if (!state || !accounts.length) {
+      return
+    }
+    const web3 = new Web3(window.ethereum)
+    state.web3 = web3
+    getBalance(state.web3, accounts[0])
+    checkApprove().then((result) => {
+      store.commit('SET_APPROVED', result)
+    })
+  })
+  window.ethereum.on('networkChanged', function (networkId) {
+    location.reload()
+  })
+  window.ethereum.on('connect', (accounts) => {
+  })
+  window.ethereum.on('disconnect', () => {
+    store.commit('SET_ADDRESS', null)
+  })
+  window.ethereum.on('close', () => {
+    store.commit('SET_ADDRESS', null)
+  })
+}
 
 export const getBalance = async (web3, account) => {
   const pool = new web3.eth.Contract(poolabi, IGOAddress)
   let balance = await pool.methods.balanceOf(account).call()
   const display = formatUnits(balance, 18)
   store.commit('SET_BALANCE',display)
-
 }
 
 
@@ -64,4 +89,23 @@ export const loadBlockchainData = async () => {
         });
     }
     return null
+}
+
+
+export const checkApprove = async () => {
+  const web3 = await loadBlockchainData()
+  const state = store.state
+  if (!web3) {
+    return false
+  }
+  const usdt = new web3.eth.Contract(usdtabi, usdtAddress)
+  const uint256MAX = BigNumber.from('115792089237316195423570985008687907853269984665640564039457584007913129639935')
+  if (usdt !== undefined) {
+    let allowance = BigNumber.from(await usdt.methods.allowance(state.address, IGOAddress).call())
+    if (allowance >= uint256MAX / 2) {
+      return true
+    }
+    return false
+  }
+  return false
 }
