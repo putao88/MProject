@@ -7,6 +7,12 @@ import usdtabi from '../abis/usdtabi'
 import poolabi from '../abis/poolabi'
 import { BigNumber } from 'ethers'
 
+
+/**
+ * @description: 监听网络改变，账号切换
+ * @param {*} window
+ * @return {*}
+ */
 if (window.ethereum && window.ethereum.isMetaMask) {
   window.ethereum.on('accountsChanged', function (accounts) {
     store.commit('SET_ADDRESS', accounts[0])
@@ -34,6 +40,12 @@ if (window.ethereum && window.ethereum.isMetaMask) {
   })
 }
 
+/**
+ * @description: 获取余额
+ * @param {*} web3
+ * @param {*} account
+ * @return {*}
+ */
 export const getBalance = async (web3, account) => {
   const pool = new web3.eth.Contract(poolabi, IGOAddress)
   let balance = await pool.methods.balanceOf(account).call()
@@ -41,7 +53,11 @@ export const getBalance = async (web3, account) => {
   store.commit('SET_BALANCE',display)
 }
 
-
+/**
+ * @description: 连接钱包，获取数据
+ * @param {*}
+ * @return {*}
+ */
 export const loadBlockchainData = async () => {
     const state = store.state
     if (JSON.stringify(state.web3) != "{}") {
@@ -89,6 +105,27 @@ export const loadBlockchainData = async () => {
         });
     }
     return null
+}
+
+
+
+/**
+ * @description: BHBHero合约向BNBH代币申请授权
+ * @param {*}
+ * @return {*}
+ */
+export const approve = async () => {
+  const web3 = await loadBlockchainData()
+  const state = store.state
+  if (!web3) {
+    return false
+  }
+  const usdt = new web3.eth.Contract(usdtabi, usdtAddress)
+  const res = await usdt.methods.approve(IGOAddress, BigNumber.from('115792089237316195423570985008687907853269984665640564039457584007913129639935')).send({ from: state.address })
+  if (res.status) {
+    const approved = await checkApprove()
+    store.commit('SET_APPROVED', approved)
+  }
 }
 
 

@@ -7,6 +7,7 @@ const state = {
   web3: {},
   address: '',
   balance: '',
+  approved: '',
 }
 
 const mutations = {
@@ -18,6 +19,9 @@ const mutations = {
   },
   SET_BALANCE: (state, payload) => {
     state.balance = payload
+  },
+  SET_APPROVED: (state, payload) => {
+    state.approved = payload
   },
 }
 
