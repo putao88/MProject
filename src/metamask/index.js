@@ -2,7 +2,7 @@ import { Message } from 'element-ui';
 import store from '../store'
 import Web3 from 'web3'
 import { formatUnits } from 'ethers/lib/utils'
-import { IGOAddress, usdtAddress} from './data'
+import { bnbheroAddress, usdtAddress} from './data'
 import usdtabi from '../abis/usdtabi'
 import poolabi from '../abis/poolabi'
 import contractabi from '../abis/contractabi'
@@ -48,7 +48,7 @@ if (window.ethereum && window.ethereum.isMetaMask) {
  * @return {*}
  */
 export const getBalance = async (web3, account) => {
-  const pool = new web3.eth.Contract(poolabi, IGOAddress)
+  const pool = new web3.eth.Contract(poolabi, bnbheroAddress)
   let data = await pool.methods.balanceOf(account).call()
   const balance = formatUnits(data, 18)
   store.commit('SET_BALANCE',balance)
@@ -72,7 +72,6 @@ export const loadBlockchainData = async () => {
             console.log(ex)
         }
         const chainId = await web3.eth.getChainId()
-        debugger
         if (chainId != 56 && chainId != 97) {
           Message({
             message: 'Please configure the corresponding chain',
@@ -121,7 +120,7 @@ export const approve = async () => {
     return false
   }
   const usdt = new web3.eth.Contract(usdtabi, usdtAddress)
-  const res = await usdt.methods.approve(IGOAddress, BigNumber.from('115792089237316195423570985008687907853269984665640564039457584007913129639935')).send({ from: state.address })
+  const res = await usdt.methods.approve(bnbheroAddress, BigNumber.from('115792089237316195423570985008687907853269984665640564039457584007913129639935')).send({ from: state.address })
   if (res.status) {
     const approved = await checkApprove()
     store.commit('SET_APPROVED', approved)
@@ -137,7 +136,7 @@ export const checkApprove = async () => {
   const usdt = new web3.eth.Contract(usdtabi, usdtAddress)
   const uint256MAX = BigNumber.from('115792089237316195423570985008687907853269984665640564039457584007913129639935')
   if (usdt !== undefined) {
-    let allowance = BigNumber.from(await usdt.methods.allowance(state.address, IGOAddress).call())
+    let allowance = BigNumber.from(await usdt.methods.allowance(state.address, bnbheroAddress).call())
     if (allowance >= uint256MAX / 2) {
       return true
     }
@@ -162,7 +161,7 @@ export const checkApprove = async () => {
  * @return {*}
  */
 export const getHeroesByOwner = async () => {
-  const pool = new web3.eth.Contract(contractabi, IGOAddress)
+  const pool = new web3.eth.Contract(contractabi, bnbheroAddress)
   let heros = await pool.methods.getHeroesByOwner(account).call()
   const data = formatUnits(heros, 18)
 }
