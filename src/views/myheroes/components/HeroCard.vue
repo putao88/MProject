@@ -6,7 +6,7 @@
 
     <div style="text-align:center" v-if="cardInfo.status === 'open'">
       <img src="@/assets/common/card.png" class="hero-card-img"/>
-      <div class="btn btn-dark disabled mt-5">Recruit</div>
+      <div class="btn btn-dark disabled mt-5" @click="Recruit">Recruit</div>
     </div>
 
     <img v-if="cardInfo.status === 'lock'" src="@/assets/common/card_lock.png" class="hero-card-img"/>
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { approve, createNewHero } from '@/metamask/index'
 export default {
   name: "HeroCard",
   props: {
@@ -26,7 +27,17 @@ export default {
       type: Object,
       default: {}
     }
-  }
+  },
+  data() {
+    return {}
+  },
+  methods: {
+    async Recruit () {
+      const isApprove = await approve()
+      createNewHero()
+      this.$emit('createCallback')
+    }
+  },
 };
 </script>
 

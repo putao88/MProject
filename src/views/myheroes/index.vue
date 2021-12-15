@@ -4,7 +4,7 @@
     <div class="page-title">My Heroes</div>
     <div class="heroes-card">
       <div class="hero-item"  v-for="item in cardlist" :key="item.key">
-        <hero-card :cardInfo="item" />
+        <hero-card :cardInfo="item" @createCallback="createCallback"/>
       </div>
     </div>
   </div>
@@ -12,6 +12,8 @@
 
 <script>
 import HeroCard from './components/HeroCard'
+import { getHeroesByOwner } from '@/metamask/index'
+
 export default {
   name:'myheroes',
   components: { HeroCard },
@@ -25,7 +27,18 @@ export default {
         {key:'5',status:'lock',title:'',content1:'Upgrade',content2:'Town Inn',content3:'to Level 2'},
       ]
     }
-  }
+  },
+  mounted() {
+    this.getHeroList()
+  },
+  methods: {
+    createCallback() {
+      this.getHeroList()
+    },
+    async getHeroList() {
+      const res = await getHeroesByOwner()
+    },
+  },
 }
 </script>
 

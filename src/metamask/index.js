@@ -5,6 +5,7 @@ import { formatUnits } from 'ethers/lib/utils'
 import { IGOAddress, usdtAddress} from './data'
 import usdtabi from '../abis/usdtabi'
 import poolabi from '../abis/poolabi'
+import contractabi from '../abis/contractabi'
 import { BigNumber } from 'ethers'
 
 
@@ -48,9 +49,9 @@ if (window.ethereum && window.ethereum.isMetaMask) {
  */
 export const getBalance = async (web3, account) => {
   const pool = new web3.eth.Contract(poolabi, IGOAddress)
-  let balance = await pool.methods.balanceOf(account).call()
-  const display = formatUnits(balance, 18)
-  store.commit('SET_BALANCE',display)
+  let data = await pool.methods.balanceOf(account).call()
+  const balance = formatUnits(data, 18)
+  store.commit('SET_BALANCE',balance)
 }
 
 /**
@@ -71,6 +72,7 @@ export const loadBlockchainData = async () => {
             console.log(ex)
         }
         const chainId = await web3.eth.getChainId()
+        debugger
         if (chainId != 56 && chainId != 97) {
           Message({
             message: 'Please configure the corresponding chain',
@@ -107,8 +109,6 @@ export const loadBlockchainData = async () => {
     return null
 }
 
-
-
 /**
  * @description: BHBHero合约向BNBH代币申请授权
  * @param {*}
@@ -128,7 +128,6 @@ export const approve = async () => {
   }
 }
 
-
 export const checkApprove = async () => {
   const web3 = await loadBlockchainData()
   const state = store.state
@@ -145,4 +144,25 @@ export const checkApprove = async () => {
     return false
   }
   return false
+}
+
+/**
+ * @description: 创建英雄
+ * @param {*}
+ * @return {*}
+ */
+
+ export const createNewHero = async () => {
+
+ } 
+//  createNewHero（创建英雄）->expediteHero（加速到达战场，不然要12小时后才能战斗->getHeroesByOwner（获得玩家英雄，数组结构）
+/**
+ * @description: 获得玩家英雄
+ * @param {*}
+ * @return {*}
+ */
+export const getHeroesByOwner = async () => {
+  const pool = new web3.eth.Contract(contractabi, IGOAddress)
+  let heros = await pool.methods.getHeroesByOwner(account).call()
+  const data = formatUnits(heros, 18)
 }
