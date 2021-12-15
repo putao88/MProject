@@ -5,7 +5,7 @@ import { formatUnits } from 'ethers/lib/utils'
 import { bnbheroAddress, usdtAddress} from './data'
 import usdtabi from '../abis/usdtabi'
 import poolabi from '../abis/poolabi'
-import contractabi from '../abis/contractabi'
+import bnbheroabi from '../abis/bnbheroabi'
 import { BigNumber } from 'ethers'
 
 
@@ -161,7 +161,7 @@ export const checkApprove = async () => {
  * @return {*}
  */
 export const getHeroesByOwner = async () => {
-  const pool = new web3.eth.Contract(contractabi, bnbheroAddress)
+  const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
   let heros = await pool.methods.getHeroesByOwner(account).call()
   const data = formatUnits(heros, 18)
 }
