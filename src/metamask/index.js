@@ -162,6 +162,5 @@ export const getHeroesByOwner = async () => {
   const { web3, account }  = store.state
   const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
   let heros = await pool.methods.getHeroesByOwner(account,false).call()
-  debugger
   const data = formatUnits(heros, 18)
 }
