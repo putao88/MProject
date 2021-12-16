@@ -2,9 +2,7 @@ import { Message } from 'element-ui';
 import store from '../store'
 import Web3 from 'web3'
 import { formatUnits } from 'ethers/lib/utils'
-import { bnbheroAddress, usdtAddress} from './data'
-import usdtabi from '../abis/usdtabi'
-import poolabi from '../abis/poolabi'
+import { bnbheroAddress } from './data'
 import bnbheroabi from '../abis/bnbheroabi'
 import { BigNumber } from 'ethers'
 
@@ -16,14 +14,14 @@ import { BigNumber } from 'ethers'
  */
 if (window.ethereum && window.ethereum.isMetaMask) {
   window.ethereum.on('accountsChanged', function (accounts) {
-    store.commit('SET_ADDRESS', accounts[0])
+    store.commit('SET_ACCOUNT', accounts[0])
     const state = store.getState()
     if (!state || !accounts.length) {
       return
     }
     const web3 = new Web3(window.ethereum)
     state.web3 = web3
-    getBalance(state.web3, accounts[0])
+    // getBalance(state.web3, accounts[0])
     checkApprove().then((result) => {
       store.commit('SET_APPROVED', result)
     })
@@ -34,25 +32,25 @@ if (window.ethereum && window.ethereum.isMetaMask) {
   window.ethereum.on('connect', (accounts) => {
   })
   window.ethereum.on('disconnect', () => {
-    store.commit('SET_ADDRESS', null)
+    store.commit('SET_ACCOUNT', null)
   })
   window.ethereum.on('close', () => {
-    store.commit('SET_ADDRESS', null)
+    store.commit('SET_ACCOUNT', null)
   })
 }
 
-/**
- * @description: 获取余额
- * @param {*} web3
- * @param {*} account
- * @return {*}
- */
-export const getBalance = async (web3, account) => {
-  const pool = new web3.eth.Contract(poolabi, bnbheroAddress)
-  let data = await pool.methods.balanceOf(account).call()
-  const balance = formatUnits(data, 18)
-  store.commit('SET_BALANCE',balance)
-}
+// /**
+//  * @description: 获取余额
+//  * @param {*} web3
+//  * @param {*} account
+//  * @return {*}
+//  */
+// export const getBalance = async (web3, account) => {
+//   const pool = new web3.eth.Contract(poolabi, bnbheroAddress)
+//   let data = await pool.methods.balanceOf(account).call()
+//   const balance = formatUnits(data, 18)
+//   store.commit('SET_BALANCE',balance)
+// }
 
 /**
  * @description: 连接钱包，获取数据
@@ -87,9 +85,9 @@ export const loadBlockchainData = async () => {
                 type: 'info'
               });
             } else {
-                store.commit('SET_ADDRESS', accounts[0])
+                store.commit('SET_ACCOUNT', accounts[0])
                 store.commit('SET_WEB3', web3)
-                await getBalance(web3, accounts[0])
+                // await getBalance(web3, accounts[0])
                 return web3
             }
           } catch (e) {
@@ -119,8 +117,8 @@ export const approve = async () => {
   if (!web3) {
     return false
   }
-  const usdt = new web3.eth.Contract(usdtabi, usdtAddress)
-  const res = await usdt.methods.approve(bnbheroAddress, BigNumber.from('115792089237316195423570985008687907853269984665640564039457584007913129639935')).send({ from: state.address })
+  const usdt = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
+  const res = await usdt.methods.approve(bnbheroAddress, BigNumber.from('115792089237316195423570985008687907853269984665640564039457584007913129639935')).send({ from: state.account })
   if (res.status) {
     const approved = await checkApprove()
     store.commit('SET_APPROVED', approved)
@@ -133,10 +131,10 @@ export const checkApprove = async () => {
   if (!web3) {
     return false
   }
-  const usdt = new web3.eth.Contract(usdtabi, usdtAddress)
+  const usdt = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
   const uint256MAX = BigNumber.from('115792089237316195423570985008687907853269984665640564039457584007913129639935')
   if (usdt !== undefined) {
-    let allowance = BigNumber.from(await usdt.methods.allowance(state.address, bnbheroAddress).call())
+    let allowance = BigNumber.from(await usdt.methods.allowance(state.account, bnbheroAddress).call())
     if (allowance >= uint256MAX / 2) {
       return true
     }
@@ -161,7 +159,9 @@ export const checkApprove = async () => {
  * @return {*}
  */
 export const getHeroesByOwner = async () => {
+  const { web3, account }  = store.state
   const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
-  let heros = await pool.methods.getHeroesByOwner(account).call()
+  let heros = await pool.methods.getHeroesByOwner(account,false).call()
+  debugger
   const data = formatUnits(heros, 18)
 }

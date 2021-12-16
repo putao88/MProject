@@ -6,14 +6,14 @@
       <div class="wallet-status-desktop" v-if="page === '/'">
         <img src="@/assets/header/logo.png" class="wallet-logo" />
         <div class="wallet-connected">
-          <div v-if="!address">
+          <div v-if="!account">
             <h4 class="text-white p-0 m-0 text-shadow wallet-title">No Wallet</h4>
             <div class="text-uppercase btn btn-red mt-1" @click="openMetamask">Connect</div>
           </div>
-          <div v-if="address">
+          <div v-if="account">
             <h4 class="text-white p-0 m-0 text-shadow wallet-title" >Wallet Connected</h4>
             <div class="wallet-address-wrap">
-              <div class="wallet-address">{{ address }}</div>
+              <div class="wallet-address">{{ account }}</div>
             </div>
           </div>
 
@@ -84,7 +84,7 @@ export default {
     }
   },
   computed: mapState([
-    'address'
+    'account'
   ]),
   created() {
     loadBlockchainData()
