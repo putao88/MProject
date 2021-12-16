@@ -59,7 +59,7 @@ if (window.ethereum && window.ethereum.isMetaMask) {
  */
 export const loadBlockchainData = async () => {
     const state = store.state
-    if (JSON.stringify(state.web3) != "{}") {
+    if (state.web3) {
         return state.web3
     }
     if (window.ethereum && window.ethereum.isMetaMask) {
@@ -150,7 +150,12 @@ export const checkApprove = async () => {
  */
 
  export const createNewHero = async () => {
-
+  const { web3, account, approved }  = store.state
+  if(!approved) approve()
+  const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
+  debugger
+  let result = await pool.methods.createNewHero()
+  debugger
  } 
 //  createNewHero（创建英雄）->expediteHero（加速到达战场，不然要12小时后才能战斗->getHeroesByOwner（获得玩家英雄，数组结构）
 /**
@@ -162,5 +167,5 @@ export const getHeroesByOwner = async () => {
   const { web3, account }  = store.state
   const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
   let heros = await pool.methods.getHeroesByOwner(account,false).call()
-  const data = formatUnits(heros, 18)
+  console.log(heros)
 }

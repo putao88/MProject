@@ -1,68 +1,121 @@
 <template>
-  <div>
-    <div class="hero-card-title">
-      <div class="hero-level-info">{{ cardInfo.title }}</div>
-    </div>
-
-    <div style="text-align:center" v-if="cardInfo.status === 'open'">
-      <img src="@/assets/common/card.png" class="hero-card-img"/>
-      <div class="btn btn-dark disabled mt-5" @click="Recruit">Recruit</div>
-    </div>
-
-    <img v-if="cardInfo.status === 'lock'" src="@/assets/common/card_lock.png" class="hero-card-img"/>
-    <div v-if="cardInfo.status === 'lock'" class="hero-card-info fs-4">
-      {{ cardInfo.content1 }} <br>
-      {{ cardInfo.content2 }} <br>
-      {{ cardInfo.content3 }}
+  <div class="hero-card-wrap">
+    <img class="card-img" src="https://play.bnbheroes.io/cards/11.png" alt="" />
+    <div class="card-id">NFT# 46285</div>
+    <div class="card-info">
+      <div class="progress">
+        <el-progress :text-inside="true" :stroke-width="16" :percentage="50" status="exception"></el-progress>
+        <div class="hp-progress-detail">HP: 500/1000</div>
+      </div>
+      <div class="description">
+        <div>
+          <img
+            src="@/assets/market/sword.png"
+            height="30px"
+            alt="attack"
+          />  
+          <span>530</span>
+        </div>
+        <div>
+          <img
+            src="@/assets/market/shield.png"
+            height="30px"
+            alt="armor"
+          />
+          <span>630</span>
+        </div>
+        <div>
+          <img
+            src="@/assets/market/shose.png"
+            height="30px"
+            alt="attack"
+          />
+          <span>430</span>
+        </div>
+      </div>
+      <div>
+        <div class="btn btn-green me-1 w-100">FIGHT</div>
+        <div class="btn btn-red w-100">SELL</div>
+      </div>
+      <div class="approve">Approve BNBH</div>
     </div>
   </div>
 </template>
 
 <script>
-import { approve, createNewHero } from '@/metamask/index'
 export default {
-  name: "HeroCard",
-  props: {
-    cardInfo: {
-      type: Object,
-      default: {}
-    }
-  },
-  data() {
-    return {}
-  },
-  methods: {
-    async Recruit () {
-      const isApprove = await approve()
-      createNewHero()
-      this.$emit('createCallback')
-    }
-  },
+  name: "Card",
 };
 </script>
 
 <style lang="scss" scoped>
-.hero-card-title {
-  justify-content: space-between;
-  display: flex;
-}
-.hero-level-info {
-  font-size: 30px;
-  color: #fff;
-  height: 40px;
-}
-.hero-card-img {
-  width: 100%;
-  margin: auto;
-  padding: 20px 7px;
-}
-.hero-card-info {
-  width: 70%;
-  font-size: 30px;
-  line-height:36px;
-  margin: auto;
-  text-align: center;
-  --bs-text-opacity: 1;
-  color: rgba(255,255,255,1);
+.hero-card-wrap {
+  .card-img {
+    width: 100%;
+    margin: auto;
+    padding: 10px 0;
+  }
+  .card-id {
+    background-size: 100% 100%;
+    height: 40px;
+    padding-top: 8px;
+    text-align: center;
+    color: #ffffff;
+    background-image: url('~@/assets/market/ribbon.png');
+  }
+  .card-info {
+    font-size: 1rem;
+    margin-top: 0.25rem;
+    color: #ffffff;
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0.5rem 0;
+    }
+    .progress {
+      flex-wrap: wrap;
+      margin: 10px 0;
+      height: 16px;
+      color: #000000;
+      position: relative;
+      .el-progress {
+        width: 100%;
+        >>> .el-progress-bar__outer{
+              border-radius: 0.25rem;
+        }
+        >>> .el-progress-bar__innerText {
+          display: none;
+        }
+        >>> .el-progress-bar__inner {
+          border-radius: initial;
+          background-image: url('~@/assets/market/progress.png');
+        }
+      }
+      div {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        top: 0;
+      }
+    }
+      .description {
+        text-align: center;
+        padding: 0.5rem 0;
+        > div {
+          width: 54px;
+        }
+      }
+      .approve {
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        padding: 5px 20px 8px;
+        justify-content: space-around;
+        background-image: url('~@/assets/market/approve.png');
+        text-transform: uppercase;
+        color: #680b0c;
+        margin-top: 0.5rem;
+      }
+  }
 }
 </style>

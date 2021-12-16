@@ -4,32 +4,32 @@
     <div class="page-title">My Heroes</div>
     <div class="heroes-card">
       <div class="hero-item"  v-for="item in cardlist" :key="item.key">
-        <hero-card :cardInfo="item" @createCallback="createCallback"/>
+        <card :cardInfo="item" @createCallback="createCallback"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import HeroCard from './components/HeroCard'
+import Card from './components/Card'
 import { getHeroesByOwner } from '@/metamask/index'
 
 export default {
   name:'myheroes',
-  components: { HeroCard },
+  components: { Card },
   data() {
     return {
       cardlist:[
-        {key:'1',status:'open',title:'',content1:'Upgrade',content2:'Town Inn',content3:'to Level 2'},
-        {key:'2',status:'open',title:'',content1:'Upgrade',content2:'Town Inn',content3:'to Level 2'},
-        {key:'3',status:'lock',title:'',content1:'Upgrade',content2:'Town Inn',content3:'to Level 2'},
-        {key:'4',status:'lock',title:'',content1:'Upgrade',content2:'Town Inn',content3:'to Level 2'},
-        {key:'5',status:'lock',title:'',content1:'Upgrade',content2:'Town Inn',content3:'to Level 2'},
+        {key:'1',status:'open',xp:'6200',level:6,title:'',cityLevel:'to Level 1'},
+        {key:'2',status:'pending',title:'',cityLevel:'to Level 1'},
+        {key:'3',status:'lock',title:'',cityLevel:'to Level 2'},
+        {key:'4',status:'lock',title:'',cityLevel:'to Level 3'},
+        {key:'5',status:'lock',title:'',cityLevel:'to Level 4'},
       ]
     }
   },
   mounted() {
-    this.getHeroList()
+    // this.getHeroList()
   },
   methods: {
     createCallback() {
@@ -57,6 +57,7 @@ export default {
   border: 3px solid #000;
   border-radius: 10px;
   padding: 10px;
+  margin: 0.5rem;
   width: 15%;
   min-width: 250px;
 }

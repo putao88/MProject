@@ -4,10 +4,10 @@ import Vue from 'vue'
 
 Vue.use(Vuex)
 const state = {
-  web3: {},
-  account: '',
-  balance: '',
-  approved: '',
+  web3: null,
+  account: null,
+  balance: null,
+  approved: null,
 }
 
 const mutations = {
