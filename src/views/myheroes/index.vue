@@ -3,7 +3,7 @@
     <img class="static-bg" src="@/assets/home/myheroes-bg.jpg" alt="myheroes-background">
     <div class="page-title">My Heroes</div>
     <div class="heroes-card">
-      <div class="hero-item"  v-for="item in cardlist" :key="item.key">
+      <div class="hero-item"  v-for="item in cardList" :key="item.key">
         <card :cardInfo="item" @createCallback="createCallback"/>
       </div>
     </div>
@@ -19,19 +19,39 @@ export default {
   components: { Card },
   data() {
     return {
-      cardlist:[
-        {key:'1',status:'open',xp:'6200',level:6,title:'',cityLevel:'to Level 1'},
-        {key:'2',status:'pending',title:'',cityLevel:'to Level 1'},
-        {key:'3',status:'lock',title:'',cityLevel:'to Level 2'},
-        {key:'4',status:'lock',title:'',cityLevel:'to Level 3'},
-        {key:'5',status:'lock',title:'',cityLevel:'to Level 4'},
+      cityLevel: 1, //城市等级
+      cardList:[
+        {key:'1',status:'pending',cityLevel:'to Level 1'},
+        {key:'2',status:'pending',cityLevel:'to Level 1'},
+        {key:'3',status:'lock',cityLevel:'to Level 2'},
+        {key:'4',status:'lock',cityLevel:'to Level 3'},
+        {key:'5',status:'lock',cityLevel:'to Level 4'},
       ]
     }
   },
   mounted() {
+    this.initCardData()
     // this.getHeroList()
   },
   methods: {
+    async initCardData() {
+      let cardData = []
+      const heroData = await getHeroesByOwner()
+      for (let i=0; i<this.cardList.length; i++) {
+        let obj = this.cardList[i]
+        // 渲染英雄
+        if (i<heroData.length) {
+          obj = {...obj,...heroData[i]}
+          obj.status = "open"
+        }
+        // 渲染待召唤卡槽
+        if (heroData.length<= i && i<parseInt(this.cityLevel+1)) {
+          obj.status = "pending"
+        }
+        cardData.push(obj)
+      }
+      this.cardList = cardData
+    },
     createCallback() {
       this.getHeroList()
     },

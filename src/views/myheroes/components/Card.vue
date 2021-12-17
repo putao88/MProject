@@ -8,14 +8,14 @@
            XP: {{ cardInfo.xp }}/{{ cardInfo.level*1000+999 }}
         </div>
         <div class="btn btn-dark unlock-btn disabled">
-          Unlock LV.{{ cardInfo.level+1 }}
+          Unlock LV.{{ cardInfo.level*1+1 }}
         </div>
       </div>
     </div>
     <div style="height:43px" v-if="cardInfo.status != 'open'"></div>
 
     <!-- 已召唤英雄渲染 -->
-    <HeroCard v-if="cardInfo.status === 'open'" />
+    <HeroCard v-if="cardInfo.status === 'open'" :cardInfo="cardInfo" />
     <!-- 已经解锁卡槽，待召唤 -->
     <div style="text-align:center" v-if="cardInfo.status === 'pending'">
       <img src="@/assets/common/card.png" class="hero-card-img"/>

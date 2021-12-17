@@ -127,6 +127,8 @@ export default {
         >>> .el-progress-bar__inner {
           border-radius: initial;
           background-image: url('~@/assets/market/progress.png');
+          background-size:100% 100%;
+          background-repeat:no-repeat;
         }
       }
       div {

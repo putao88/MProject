@@ -1,11 +1,11 @@
 <template>
   <div class="hero-card-wrap">
     <img class="card-img" src="https://play.bnbheroes.io/cards/11.png" alt="" />
-    <div class="card-id">NFT# 46285</div>
+    <div class="card-id">NFT# {{ cardInfo.tokenId }}</div>
     <div class="card-info">
       <div class="progress">
-        <el-progress :text-inside="true" :stroke-width="16" :percentage="50" status="exception"></el-progress>
-        <div class="hp-progress-detail">HP: 500/1000</div>
+        <el-progress :text-inside="true" :stroke-width="16" :percentage="parseInt(cardInfo.hp)/10" status="exception"></el-progress>
+        <div class="hp-progress-detail">HP: {{cardInfo.hp}}/1000</div>
       </div>
       <div class="description">
         <div>
@@ -14,7 +14,7 @@
             height="30px"
             alt="attack"
           />  
-          <span>530</span>
+          <span>{{ cardInfo.attack }}</span>
         </div>
         <div>
           <img
@@ -22,7 +22,7 @@
             height="30px"
             alt="armor"
           />
-          <span>630</span>
+          <span>{{ cardInfo.armor }}</span>
         </div>
         <div>
           <img
@@ -30,7 +30,7 @@
             height="30px"
             alt="attack"
           />
-          <span>430</span>
+          <span>{{ cardInfo.speed }}</span>
         </div>
       </div>
       <div>
@@ -44,7 +44,13 @@
 
 <script>
 export default {
-  name: "Card",
+  name: "HeroCard",
+  props: {
+    cardInfo: {
+      type: Object,
+      default: {}
+    }
+  },
 };
 </script>
 
@@ -90,6 +96,8 @@ export default {
         >>> .el-progress-bar__inner {
           border-radius: initial;
           background-image: url('~@/assets/market/progress.png');
+          background-size:100% 100%;
+          background-repeat:no-repeat;
         }
       }
       div {

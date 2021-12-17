@@ -2,8 +2,9 @@ import { Message } from 'element-ui';
 import store from '../store'
 import Web3 from 'web3'
 import { formatUnits } from 'ethers/lib/utils'
-import { bnbheroAddress } from './data'
+import { bnbheroAddress, bnbHeroToken } from './data'
 import bnbheroabi from '../abis/bnbheroabi'
+import bnbabi from '../abis/bnbabi'
 import { BigNumber } from 'ethers'
 
 
@@ -21,7 +22,7 @@ if (window.ethereum && window.ethereum.isMetaMask) {
     }
     const web3 = new Web3(window.ethereum)
     state.web3 = web3
-    // getBalance(state.web3, accounts[0])
+    getBalance(state.web3, accounts[0])
     checkApprove().then((result) => {
       store.commit('SET_APPROVED', result)
     })
@@ -39,18 +40,18 @@ if (window.ethereum && window.ethereum.isMetaMask) {
   })
 }
 
-// /**
-//  * @description: 获取余额
-//  * @param {*} web3
-//  * @param {*} account
-//  * @return {*}
-//  */
-// export const getBalance = async (web3, account) => {
-//   const pool = new web3.eth.Contract(poolabi, bnbheroAddress)
-//   let data = await pool.methods.balanceOf(account).call()
-//   const balance = formatUnits(data, 18)
-//   store.commit('SET_BALANCE',balance)
-// }
+/**
+ * @description: 获取余额
+ * @param {*} web3
+ * @param {*} account
+ * @return {*}
+ */
+export const getBalance = async (web3, account) => {
+  const pool = new web3.eth.Contract(bnbabi, bnbHeroToken)
+  let data = await pool.methods.balanceOf(account).call()
+  const balance = formatUnits(data, 18)
+  store.commit('SET_BALANCE',balance)
+}
 
 /**
  * @description: 连接钱包，获取数据
@@ -87,7 +88,7 @@ export const loadBlockchainData = async () => {
             } else {
                 store.commit('SET_ACCOUNT', accounts[0])
                 store.commit('SET_WEB3', web3)
-                // await getBalance(web3, accounts[0])
+                await getBalance(web3, accounts[0])
                 return web3
             }
           } catch (e) {
@@ -153,9 +154,7 @@ export const checkApprove = async () => {
   const { web3, account, approved }  = store.state
   if(!approved) approve()
   const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
-  debugger
   let result = await pool.methods.createNewHero()
-  debugger
  } 
 //  createNewHero（创建英雄）->expediteHero（加速到达战场，不然要12小时后才能战斗->getHeroesByOwner（获得玩家英雄，数组结构）
 /**
@@ -167,5 +166,5 @@ export const getHeroesByOwner = async () => {
   const { web3, account }  = store.state
   const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
   let heros = await pool.methods.getHeroesByOwner(account,false).call()
-  console.log(heros)
+  return heros
 }
