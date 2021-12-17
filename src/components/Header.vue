@@ -38,7 +38,7 @@
       </div>
 
       <div style="text-align:right">
-        <div class="bnbh-info text-white">0 BNBH</div>
+        <div class="bnbh-info text-white">{{ bnbhBalance }} BNBH</div>
         <div style="width: fit-content; float: right;text-align: right;" v-if="page === '/'">
           <div class="text-uppercase btn btn-yellow me-4" style="width:150px">BUY</div>
         </div>
@@ -84,7 +84,8 @@ export default {
     }
   },
   computed: mapState([
-    'account'
+    'account',
+    'bnbhBalance'
   ]),
   created() {
     loadBlockchainData()

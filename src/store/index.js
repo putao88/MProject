@@ -7,6 +7,7 @@ const state = {
   web3: null,
   account: null,
   balance: null,
+  bnbhBalance: null,
   approved: null,
 }
 
@@ -17,8 +18,8 @@ const mutations = {
   SET_ACCOUNT: (state, payload) => {
     state.account = payload
   },
-  SET_BALANCE: (state, payload) => {
-    state.balance = payload
+  SET_BNBH_BALANCE: (state, payload) => {
+    state.bnbhBalance = payload
   },
   SET_APPROVED: (state, payload) => {
     state.approved = payload

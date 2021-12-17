@@ -49,8 +49,8 @@ if (window.ethereum && window.ethereum.isMetaMask) {
 export const getBalance = async (web3, account) => {
   const pool = new web3.eth.Contract(bnbabi, bnbHeroToken)
   let data = await pool.methods.balanceOf(account).call()
-  const balance = formatUnits(data, 18)
-  store.commit('SET_BALANCE',balance)
+  const bnbhBalance = formatUnits(data, 18)
+  store.commit('SET_BNBH_BALANCE',bnbhBalance)
 }
 
 /**
