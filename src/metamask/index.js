@@ -15,18 +15,7 @@ import { BigNumber } from 'ethers'
  */
 if (window.ethereum && window.ethereum.isMetaMask) {
   window.ethereum.on('accountsChanged', function (accounts) {
-    store.commit('SET_ACCOUNT', accounts[0])
-    const state = store.getState()
-    if (!state || !accounts.length) {
-      return
-    }
-    const web3 = new Web3(window.ethereum)
-    state.web3 = web3
-    getBalance(state.web3, accounts[0])
-    getHeroesByOwner(state.web3, accounts[0])
-    checkApprove().then((result) => {
-      store.commit('SET_APPROVED', result)
-    })
+    location.reload()
   })
   window.ethereum.on('networkChanged', function (networkId) {
     location.reload()
@@ -34,10 +23,10 @@ if (window.ethereum && window.ethereum.isMetaMask) {
   window.ethereum.on('connect', (accounts) => {
   })
   window.ethereum.on('disconnect', () => {
-    store.commit('SET_ACCOUNT', null)
+    location.reload()
   })
   window.ethereum.on('close', () => {
-    store.commit('SET_ACCOUNT', null)
+    location.reload()
   })
 }
 
