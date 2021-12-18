@@ -1,11 +1,12 @@
 ## 常用相关地址
-1. [BSC网络连接](https://docs.binance.org/smart-chain/developer/rpc.html#testnetchainid-0x61-97-in-decimal)
-2. [BNB Hero原网站](https://play.bnbheroes.io/)
-3. [BNB测试网站](https://testnet.bscscan.com/)
-4. [BNB测试币领取地址](https://testnet.binance.org/faucet-smart)
-5. [英雄合约代码地址](https://bscscan.com/address/0x5ca334e4b585da8e6054f16d991ed4399ef33d24#code)
-6. [文档地址](https://shimo.im/docs/pPyxxJjWPKxPQYD8/ )
-7. [vue参考项目](https://github.com/joaquin-alfaro/ethereum-payment-vuejs)
+- [BSC网络连接](https://docs.binance.org/smart-chain/developer/rpc.html#testnetchainid-0x61-97-in-decimal)
+- [BNB Hero原网站](https://play.bnbheroes.io/)
+- [BNB测试网站](https://testnet.bscscan.com/)
+- [BNB测试币领取地址](https://testnet.binance.org/faucet-smart)
+- [文档地址](https://shimo.im/docs/pPyxxJjWPKxPQYD8/ )
+- [vue参考项目](https://github.com/joaquin-alfaro/ethereum-payment-vuejs)
+- [英雄合约代码地址](https://bscscan.com/address/0x5ca334e4b585da8e6054f16d991ed4399ef33d24#code)
+- [金额合约代码地址](https://pancake.kiemtienonline360.com/#/swap)
 ## 连接metaMask
 ### BSC测试网
 1. 网络名称: BSC测试网
@@ -27,7 +28,7 @@
 
 ## 业务逻辑
 
-### myheros
+### myheroes
 1. 这个游戏的原版逻辑是这样的：检测城市等级，显示对应等级的界面：  
   - 开局是1级，默认2个卡槽，可以召唤英雄
   - 2级解锁第三个卡槽，3级解锁第四个卡槽，4级解锁第五个卡槽

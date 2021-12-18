@@ -23,6 +23,7 @@ if (window.ethereum && window.ethereum.isMetaMask) {
     const web3 = new Web3(window.ethereum)
     state.web3 = web3
     getBalance(state.web3, accounts[0])
+    getHeroesByOwner(state.web3, accounts[0])
     checkApprove().then((result) => {
       store.commit('SET_APPROVED', result)
     })
@@ -38,19 +39,6 @@ if (window.ethereum && window.ethereum.isMetaMask) {
   window.ethereum.on('close', () => {
     store.commit('SET_ACCOUNT', null)
   })
-}
-
-/**
- * @description: 获取余额
- * @param {*} web3
- * @param {*} account
- * @return {*}
- */
-export const getBalance = async (web3, account) => {
-  const pool = new web3.eth.Contract(bnbabi, bnbHeroToken)
-  let data = await pool.methods.balanceOf(account).call()
-  const bnbhBalance = formatUnits(data, 18)
-  store.commit('SET_BNBH_BALANCE',bnbhBalance)
 }
 
 /**
@@ -89,6 +77,7 @@ export const loadBlockchainData = async () => {
                 store.commit('SET_ACCOUNT', accounts[0])
                 store.commit('SET_WEB3', web3)
                 await getBalance(web3, accounts[0])
+                await getHeroesByOwner(web3, accounts[0])
                 return web3
             }
           } catch (e) {
@@ -145,6 +134,21 @@ export const checkApprove = async () => {
 }
 
 /**
+ * @description: 获取余额
+ * @param {*} web3
+ * @param {*} account
+ * @return {*}
+ */
+export const getBalance = async (web3, account) => {
+  const pool = new web3.eth.Contract(bnbabi, bnbHeroToken)
+  let data = await pool.methods.balanceOf(account).call()
+  const bnbhBalance = formatUnits(data, 18)
+  store.commit('SET_BNBH_BALANCE',bnbhBalance)
+}
+
+
+//  createNewHero（创建英雄）->expediteHero（加速到达战场，不然要12小时后才能战斗->getHeroesByOwner（获得玩家英雄，数组结构）
+/**
  * @description: 创建英雄
  * @param {*}
  * @return {*}
@@ -156,15 +160,14 @@ export const checkApprove = async () => {
   const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
   let result = await pool.methods.createNewHero()
  } 
-//  createNewHero（创建英雄）->expediteHero（加速到达战场，不然要12小时后才能战斗->getHeroesByOwner（获得玩家英雄，数组结构）
+
 /**
  * @description: 获得玩家英雄
  * @param {*}
  * @return {*}
  */
-export const getHeroesByOwner = async () => {
-  const { web3, account }  = store.state
+export const getHeroesByOwner = async (web3, account) => {
   const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
-  let heros = await pool.methods.getHeroesByOwner(account,false).call()
-  return heros
+  let heroes = await pool.methods.getHeroesByOwner(account,false).call()
+  store.commit('SET_HERODATAS',heroes)
 }

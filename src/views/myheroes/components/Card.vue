@@ -52,7 +52,6 @@ export default {
     async Recruit () {
       const isApprove = await approve()
       createNewHero()
-      this.$emit('createCallback')
     }
   },
 };

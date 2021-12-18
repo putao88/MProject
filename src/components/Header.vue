@@ -88,7 +88,7 @@ export default {
     'bnbhBalance'
   ]),
   created() {
-    loadBlockchainData()
+    this.openMetamask()
   },
   methods: {
     goBack() {

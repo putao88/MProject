@@ -1,11 +1,11 @@
 <template>
-  <div class="hero-card-wrap">
+  <div class="hero-card-container">
     <img class="card-img" src="https://play.bnbheroes.io/cards/11.png" alt="" />
-    <div class="card-id">NFT# {{ cardInfo.tokenId }}</div>
+    <div class="card-id">NFT# {{ heroInfo.tokenId }}</div>
     <div class="card-info">
       <div class="progress">
-        <el-progress :text-inside="true" :stroke-width="16" :percentage="parseInt(cardInfo.hp)/10" status="exception"></el-progress>
-        <div class="hp-progress-detail">HP: {{cardInfo.hp}}/1000</div>
+        <el-progress :text-inside="true" :stroke-width="16" :percentage="parseInt(heroInfo.hp)/10" status="exception"></el-progress>
+        <div class="hp-progress-detail">HP: {{heroInfo.hp}}/1000</div>
       </div>
       <div class="description">
         <div>
@@ -14,7 +14,7 @@
             height="30px"
             alt="attack"
           />  
-          <span>{{ cardInfo.attack }}</span>
+          <span>{{ heroInfo.attack }}</span>
         </div>
         <div>
           <img
@@ -22,7 +22,7 @@
             height="30px"
             alt="armor"
           />
-          <span>{{ cardInfo.armor }}</span>
+          <span>{{ heroInfo.armor }}</span>
         </div>
         <div>
           <img
@@ -30,7 +30,7 @@
             height="30px"
             alt="attack"
           />
-          <span>{{ cardInfo.speed }}</span>
+          <span>{{ heroInfo.speed }}</span>
         </div>
       </div>
       <div>
@@ -46,7 +46,7 @@
 export default {
   name: "HeroCard",
   props: {
-    cardInfo: {
+    heroInfo: {
       type: Object,
       default: {}
     }
@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.hero-card-wrap {
+.hero-card-container {
   .card-img {
     width: 100%;
     margin: auto;

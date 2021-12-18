@@ -39,12 +39,12 @@
               <img src="@/assets/fight/glod.png" alt />
               <div>
                 BASE BNB
-                <br />{{ curItem.bnbInfo }}
+                <br />{{ curItem.bnb }}
               </div>
               <img src="@/assets/fight/xp.png" alt />
               <div>
                 XP
-                <br />{{ curItem.xpInfo }}
+                <br />{{ curItem.xp }}
               </div>
             </div>
           </div>
@@ -57,7 +57,7 @@
 
 <script>
 export default {
-  name: "FightCard",
+  name: "BossFight",
   props: {
     dataSource: {
       type: Array,
@@ -109,6 +109,7 @@ export default {
   width: 100%;
   display: flex;
   align-items: center;
+  padding: 1.5rem;
   .arrow {
     cursor: pointer;
   }
@@ -185,7 +186,8 @@ export default {
   align-items: center;
 }
 .info {
-  padding: 24px;
+  margin: 1.5rem;
+  padding: 1.5rem;
   text-align: left;
   background: rgba(0, 0, 0, 0.76);
   border-radius: 5% 5%;
