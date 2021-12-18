@@ -54,6 +54,7 @@ export default {
       return {
         'card-bottom': true, 
         'btn': true,
+        'disabled': !this.isFight,
         'btn-dark': !this.isFight,
         'btn-yellow': this.isFight,
       }
