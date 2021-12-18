@@ -15,7 +15,7 @@
     <div style="height:43px" v-if="cardInfo.status != 'open'"></div>
 
     <!-- 已召唤英雄渲染 -->
-    <HeroCard v-if="cardInfo.status === 'open'" :cardInfo="cardInfo" />
+    <HeroCard v-if="cardInfo.status === 'open'" :heroInfo="cardInfo" />
     <!-- 已经解锁卡槽，待召唤 -->
     <div style="text-align:center" v-if="cardInfo.status === 'pending'">
       <img src="@/assets/common/card.png" class="hero-card-img"/>

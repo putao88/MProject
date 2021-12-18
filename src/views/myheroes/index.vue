@@ -4,7 +4,7 @@
     <div class="page-title">My Heroes</div>
     <div class="heroes-card">
       <div class="hero-item"  v-for="item in cardList" :key="item.key">
-        <card :heroInfo="item"/>
+        <card :cardInfo="item"/>
       </div>
     </div>
   </div>
