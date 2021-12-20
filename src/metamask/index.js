@@ -160,3 +160,10 @@ export const getHeroesByOwner = async (web3, account) => {
   let heroes = await pool.methods.getHeroesByOwner(account,false).call()
   store.commit('SET_HERODATAS',heroes)
 }
+
+/**
+ * @description: 获取当前城市等级
+ * @param {*}
+ * @return {*}
+ */
+

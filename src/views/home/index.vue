@@ -38,11 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="upgrade-container" v-show="showUpgrade">
-      <div class="upgrade">
-        <Upgrade @closeModel="closeModel"/>
-      </div>
-    </div>
+    <Upgrade @closeModel="closeModel" v-show="showUpgrade" />
 
   </div>
 </template>
@@ -148,19 +144,5 @@ export default {
   .town {
     width: auto;
   }
-}
-.upgrade-container {
-  width:100%;
-  height: 100vh;
-  position: relative;
-    left: 0;
-    top:0;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    .upgrade {
-      width: 600px;
-      position: absolute;
-    }
 }
 </style>
