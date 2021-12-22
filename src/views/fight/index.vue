@@ -82,7 +82,7 @@ export default {
   computed:{
     ...mapState({
       heroDatas: state => state.heroDatas,
-      cityLevel: state => state.cityLevel,
+      townLevel: state => state.townLevel,
     }),
   },
   watch: {

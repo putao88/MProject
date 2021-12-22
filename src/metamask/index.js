@@ -67,6 +67,7 @@ export const loadBlockchainData = async () => {
                 store.commit('SET_WEB3', web3)
                 await getBalance(web3, accounts[0])
                 await getHeroesByOwner(web3, accounts[0])
+                await getTownLevel(web3, accounts[0])
                 return web3
             }
           } catch (e) {
@@ -159,4 +160,16 @@ export const getHeroesByOwner = async (web3, account) => {
   const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
   let heroes = await pool.methods.getHeroesByOwner(account,false).call()
   store.commit('SET_HERODATAS',heroes)
+}
+
+/**
+ * @description: 获取城市等级
+ * @param {*}
+ * @return {*}
+ */
+ export const getTownLevel = async (web3, account) => {
+  const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
+  let heroes = await pool.methods.getTownLevel(account,false).call()
+  console.log('heroes:',heroes)
+  store.commit('SET_TOWNLEVEL',heroes)
 }

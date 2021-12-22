@@ -9,7 +9,7 @@ const state = {
   balance: null, //bnb余额
   bnbhBalance: null, //bnb余额
   approved: null, //是否授权
-  cityLevel: 1, //城市等级
+  townLevel: 1, //城市等级
   heroDatas:[], //拥有的英雄
 }
 
@@ -27,9 +27,12 @@ const mutations = {
     state.approved = payload
   },
   SET_CITYLEVEL: (state, payload) => {
-    state.cityLevel = payload
+    state.townLevel = payload
   },
   SET_HERODATAS: (state, payload) => {
+    state.heroDatas = payload
+  },
+  SET_TOWNLEVEL: (state, payload) => {
     state.heroDatas = payload
   },
 }

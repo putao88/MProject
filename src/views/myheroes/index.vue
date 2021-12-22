@@ -21,25 +21,25 @@ export default {
   data() {
     return {
       initCardList:[
-        {key:'1',status:'pending',cityLevel:'to Level 1'},
-        {key:'2',status:'pending',cityLevel:'to Level 1'},
-        {key:'3',status:'lock',cityLevel:'to Level 2'},
-        {key:'4',status:'lock',cityLevel:'to Level 3'},
-        {key:'5',status:'lock',cityLevel:'to Level 4'},
+        {key:'1',status:'pending',townLevel:'to Level 1'},
+        {key:'2',status:'pending',townLevel:'to Level 1'},
+        {key:'3',status:'lock',townLevel:'to Level 2'},
+        {key:'4',status:'lock',townLevel:'to Level 3'},
+        {key:'5',status:'lock',townLevel:'to Level 4'},
       ],
       cardList:[
-        {key:'1',status:'pending',cityLevel:'to Level 1'},
-        {key:'2',status:'pending',cityLevel:'to Level 1'},
-        {key:'3',status:'lock',cityLevel:'to Level 2'},
-        {key:'4',status:'lock',cityLevel:'to Level 3'},
-        {key:'5',status:'lock',cityLevel:'to Level 4'},
+        {key:'1',status:'pending',townLevel:'to Level 1'},
+        {key:'2',status:'pending',townLevel:'to Level 1'},
+        {key:'3',status:'lock',townLevel:'to Level 2'},
+        {key:'4',status:'lock',townLevel:'to Level 3'},
+        {key:'5',status:'lock',townLevel:'to Level 4'},
       ],
     }
   },
   computed:{
     ...mapState({
       heroDatas: state => state.heroDatas,
-      cityLevel: state => state.cityLevel,
+      townLevel: state => state.townLevel,
     }),
   },
   watch: {
@@ -61,7 +61,7 @@ export default {
           obj.status = "open"
         }
         // 渲染待召唤卡槽
-        if (this.heroDatas.length<= i && i<parseInt(this.cityLevel+1)) {
+        if (this.heroDatas.length<= i && i<parseInt(this.townLevel+1)) {
           obj.status = "pending"
         }
         cardData.push(obj)
