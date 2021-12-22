@@ -6,7 +6,7 @@
         <div class="hero-xp-info">
             XP: {{ heroInfo.xp }}/{{ heroInfo.level*1000+999 }}
         </div>
-        <div class="btn btn-dark unlock-btn disabled">
+        <div :class="unlockBtnClass" @click="unclock">
           Unlock LV.{{ heroInfo.level*1+1 }}
         </div>
       </div>
@@ -51,12 +51,33 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: "HeroCard",
   props: {
     heroInfo:{
       default: {}
     }
+  },
+  computed: {
+    ...mapState([
+      'account',
+      'bnbhBalance'
+    ]),
+    unlockBtnClass: function () {
+      const isYellow = this.heroInfo.xp > (this.heroInfo.level*1000+999)
+      return {
+        'unlock-btn': true, 
+        'btn': true,
+        'disabled': !isYellow,
+        'btn-dark': !isYellow,
+        'btn-yellow': isYellow,
+      }
+    }
+  },
+  methods: {
+    unclock() {},
   },
 };
 </script>

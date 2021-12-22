@@ -82,7 +82,7 @@ export default {
   computed:{
     ...mapState({
       heroDatas: state => state.heroDatas,
-      cityLevel: state => state.cityLevel,
+      townLevel: state => state.townLevel,
     }),
   },
   watch: {
@@ -91,6 +91,13 @@ export default {
     },
   },
   mounted() {
+    const tokenId = this.$route.query.tokenId || -1
+    for (let i=0; i< this.heroDatas.length; i++) {
+      if (tokenId === this.heroDatas[i].tokenId) {
+        this.curHeroIndex = i
+        return
+      }
+    }
   },
 
   methods: {
@@ -99,7 +106,7 @@ export default {
     },
     initCardData() {
     },
-        // 上一张卡片
+    // 上一张卡片
     previous(key,list) {
       let newIndex = 0
       if (!this[list].length) return

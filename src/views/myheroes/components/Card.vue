@@ -7,7 +7,7 @@
         <div class="hero-xp-info">
            XP: {{ cardInfo.xp }}/{{ cardInfo.level*1000+999 }}
         </div>
-        <div class="btn btn-dark unlock-btn disabled">
+        <div :class="unlockBtnClass" @click="unclock">
           Unlock LV.{{ cardInfo.level*1+1 }}
         </div>
       </div>
@@ -19,7 +19,7 @@
     <!-- 已经解锁卡槽，待召唤 -->
     <div style="text-align:center" v-if="cardInfo.status === 'pending'">
       <img src="@/assets/common/card.png" class="hero-card-img"/>
-      <div class="btn btn-dark disabled mt-5" @click="Recruit">Recruit</div>
+      <div :class="recruitBtnClass" @click="recruit">Recruit</div>
     </div>
 
     <!-- 待解锁卡槽 -->
@@ -27,7 +27,7 @@
     <div v-if="cardInfo.status === 'lock'" class="hero-card-info fs-4">
       Upgrade <br>
       Town Inn<br>
-      {{ cardInfo.cityLevel }}
+      {{ cardInfo.townLevel }}
     </div>
 
   </div>
@@ -35,7 +35,8 @@
 
 <script>
 import HeroCard from "./HeroCard";
-import { approve, createNewHero } from '@/metamask/index'
+import { approve, createNewHero } from '@/metamask/index';
+import { mapState } from 'vuex'
 export default {
   name: "Card",
   components: { HeroCard },
@@ -48,11 +49,37 @@ export default {
   data() {
     return {}
   },
+  computed: {
+    ...mapState([
+      'account',
+      'bnbhBalance'
+    ]),
+    recruitBtnClass: function () {
+      return {
+        'mt-5': true, 
+        'btn': true,
+        'disabled': !this.account,
+        'btn-dark': !this.account,
+        'btn-yellow': this.account,
+      }
+    },
+    unlockBtnClass: function () {
+      const isYellow = this.cardInfo.xp > (this.cardInfo.level*1000+999)
+      return {
+        'unlock-btn': true, 
+        'btn': true,
+        'disabled': !isYellow,
+        'btn-dark': !isYellow,
+        'btn-yellow': isYellow,
+      }
+    }
+  },
   methods: {
-    async Recruit () {
+    async recruit () {
       const isApprove = await approve()
       createNewHero()
-    }
+    },
+    unclock() {},
   },
 };
 </script>

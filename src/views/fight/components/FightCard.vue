@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div :class="classObject">FIGHT</div>
+      <div :class="fightBtnClass">FIGHT</div>
     </div>
   </div>
 </template>
@@ -50,7 +50,7 @@ export default {
     };
   },
   computed: {
-    classObject: function () {
+    fightBtnClass: function () {
       return {
         'card-bottom': true, 
         'btn': true,

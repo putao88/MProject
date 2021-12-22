@@ -34,8 +34,8 @@
         </div>
       </div>
       <div>
-        <div class="btn btn-green me-1 w-100">FIGHT</div>
-        <div class="btn btn-red w-100">SELL</div>
+        <div class="btn btn-green me-1 w-100" @click="toFight(heroInfo.tokenId)">FIGHT</div>
+        <div class="btn btn-red w-100 disabled">SELL</div>
       </div>
       <div class="approve">Approve BNBH</div>
     </div>
@@ -49,6 +49,14 @@ export default {
     heroInfo: {
       type: Object,
       default: {}
+    }
+  },
+  methods: {
+    toFight(tokenId) {
+       this.$router.push({
+        path: 'fight',
+        query: { tokenId }
+      });
     }
   },
 };

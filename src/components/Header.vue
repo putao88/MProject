@@ -33,7 +33,7 @@
       <div style="text-align:right">
         <div class="bnb-info text-white">0 BNB</div>
         <div style="width: fit-content; float: right;text-align: right;" v-if="page === '/'">
-          <div class="text-uppercase btn btn-dark me-4 disabled" style="width:150px">CLAIM</div>
+          <div :class="claimBtnClass" style="width:150px">CLAIM</div>
         </div>
       </div>
 
@@ -83,10 +83,22 @@ export default {
       this.page = to.path
     }
   },
-  computed: mapState([
-    'account',
-    'bnbhBalance'
-  ]),
+  computed: {
+    ...mapState([
+      'account',
+      'bnbhBalance'
+    ]),
+    claimBtnClass: function () {
+      return {
+        'text-uppercase': true, 
+        'btn': true,
+        'me-4': true,
+        'disabled': !this.account,
+        'btn-dark': !this.account,
+        'btn-yellow': this.account,
+      }
+    }
+  },
   created() {
     this.openMetamask()
   },
