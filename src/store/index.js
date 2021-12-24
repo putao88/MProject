@@ -6,11 +6,12 @@ Vue.use(Vuex)
 const state = {
   web3: null, // web3对象
   account: null, // 当前账号
-  balance: null, //bnb余额
+  balance: 0, //bnb余额
   bnbhBalance: 0, //bnb余额
   approved: null, //是否授权
-  townLevel: 1, //城市等级
+  townList: [0,0,0,0], //4种城市的对应等级,默认为1级即值为0
   heroDatas:[], //拥有的英雄
+  unLockTime:0 ,//首次解锁时间
 }
 
 const mutations = {
@@ -32,8 +33,11 @@ const mutations = {
   SET_HERODATAS: (state, payload) => {
     state.heroDatas = payload
   },
-  SET_TOWNLEVEL: (state, payload) => {
-    state.townLevel = payload
+  SET_TOWNLIST: (state, payload) => {
+    state.townList = payload
+  },
+  SET_UNLOCKTIME: (state, payload) => {
+    state.unLockTime = payload
   },
 }
 

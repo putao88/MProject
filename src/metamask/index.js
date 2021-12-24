@@ -3,8 +3,9 @@ import store from '../store'
 import Web3 from 'web3'
 import { formatUnits } from 'ethers/lib/utils'
 import { bnbheroAddress, bnbHeroToken } from './data'
-import bnbheroabi from '../abis/bnbheroabi'
-import bnbabi from '../abis/bnbabi'
+import bnbHeroAbi from '../abis/bnbHeroAbi'
+import bnbTokenAbi from '../abis/bnbTokenAbi'
+import bnbhPriceAbi from '../abis/bnbhPriceAbi'
 import { BigNumber } from 'ethers'
 
 
@@ -65,9 +66,11 @@ export const loadBlockchainData = async () => {
             } else {
                 store.commit('SET_ACCOUNT', accounts[0])
                 store.commit('SET_WEB3', web3)
+                await getBnbhBalance(web3, accounts[0])
                 await getBalance(web3, accounts[0])
                 await getHeroesByOwner(web3, accounts[0])
                 await getTownLevel(web3, accounts[0])
+                await unLockTime(web3, accounts[0])
                 return web3
             }
           } catch (e) {
@@ -97,7 +100,7 @@ export const approve = async () => {
   if (!web3) {
     return false
   }
-  const usdt = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
+  const usdt = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
   const res = await usdt.methods.approve(bnbheroAddress, BigNumber.from('115792089237316195423570985008687907853269984665640564039457584007913129639935')).send({ from: state.account })
   if (res.status) {
     const approved = await checkApprove()
@@ -111,7 +114,7 @@ export const checkApprove = async () => {
   if (!web3) {
     return false
   }
-  const usdt = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
+  const usdt = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
   const uint256MAX = BigNumber.from('115792089237316195423570985008687907853269984665640564039457584007913129639935')
   if (usdt !== undefined) {
     let allowance = BigNumber.from(await usdt.methods.allowance(state.account, bnbheroAddress).call())
@@ -124,16 +127,29 @@ export const checkApprove = async () => {
 }
 
 /**
+ * @description: 获取bnbh余额
+ * @param {*} web3
+ * @param {*} account
+ * @return {*}
+ */
+export const getBnbhBalance = async (web3, account) => {
+  const pool = new web3.eth.Contract(bnbTokenAbi, bnbHeroToken)
+  let data = await pool.methods.balanceOf(account).call()
+  const bnbhBalance = formatUnits(data, 18)
+  store.commit('SET_BNBH_BALANCE',bnbhBalance)
+}
+
+/**
  * @description: 获取余额
  * @param {*} web3
  * @param {*} account
  * @return {*}
  */
 export const getBalance = async (web3, account) => {
-  const pool = new web3.eth.Contract(bnbabi, bnbHeroToken)
-  let data = await pool.methods.balanceOf(account).call()
-  const bnbhBalance = formatUnits(data, 18)
-  store.commit('SET_BNBH_BALANCE',bnbhBalance)
+  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
+  let data = await pool.methods.balances(account).call()
+  const balance = formatUnits(data, 18)
+  store.commit('SET_BALANCE',balance)
 }
 
 
@@ -147,7 +163,7 @@ export const getBalance = async (web3, account) => {
  export const createNewHero = async () => {
   const { web3, account, approved }  = store.state
   if(!approved) approve()
-  const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
+  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
   let result = await pool.methods.createNewHero()
  } 
 
@@ -157,7 +173,7 @@ export const getBalance = async (web3, account) => {
  * @return {*}
  */
 export const getHeroesByOwner = async (web3, account) => {
-  const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
+  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
   let heroes = await pool.methods.getHeroesByOwner(account,false).call()
   store.commit('SET_HERODATAS',heroes)
 }
@@ -168,7 +184,23 @@ export const getHeroesByOwner = async (web3, account) => {
  * @return {*}
  */
  export const getTownLevel = async (web3, account) => {
-  const pool = new web3.eth.Contract(bnbheroabi, bnbheroAddress)
-  let townLevel = await pool.methods.getTownLevel(account,1).call()
-  store.commit('SET_TOWNLEVEL',townLevel)
+  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
+  let townList = []
+  for(let i=0; i<4;i++) {
+    const townLevel = await pool.methods.getTownLevel(account,i).call() || 0
+    townList.push(townLevel)
+  }
+  store.commit('SET_TOWNLIST',townList)
 }
+
+/**
+ * @description: 获得到首次解锁时间，只有达到解锁时间，才能够领取奖励
+ * @param {*}
+ * @return {*}
+ */
+export const unLockTime = async (web3, account) => {
+  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
+  const openTime = await pool.methods.unLockTime(account).call()
+  store.commit('SET_UNLOCKTIME',openTime)
+}
+

@@ -31,9 +31,10 @@
     <div class="header-right">
 
       <div style="text-align:right">
-        <div class="bnb-info text-white">0 BNB</div>
+        <div class="bnb-info text-white">{{ finalBalance }} BNB</div>
         <div style="width: fit-content; float: right;text-align: right;" v-if="page === '/'">
           <div :class="claimBtnClass" style="width:150px">CLAIM</div>
+          <div v-if="timeRemain" style="color:#fff;text-align:center">{{ timeRemain }}</div>
         </div>
       </div>
 
@@ -69,6 +70,9 @@
 <script>
 import { loadBlockchainData } from '../metamask'
 import { mapState } from 'vuex'
+import { changeSecondsToHours, taxFee } from '@/utils'
+import moment from 'moment';
+
 export default {
   name:'Header',
   data(){
@@ -86,16 +90,34 @@ export default {
   computed: {
     ...mapState([
       'account',
-      'bnbhBalance'
+      'balance',
+      'bnbhBalance',
+      'unLockTime',
     ]),
     claimBtnClass: function () {
       return {
         'text-uppercase': true, 
         'btn': true,
         'me-4': true,
-        'disabled': !this.account,
-        'btn-dark': !this.account,
-        'btn-yellow': this.account,
+        'disabled': !(this.account && !this.timeRemain),
+        'btn-dark': true,
+        'btn-yellow': this.account && !this.timeRemain,
+      }
+    },
+    timeRemain() {
+      const now = moment().format('X')
+      // 计算锁定时间和当前时间差值
+      const formateTime = this.unLockTime > now ? changeSecondsToHours(this.unLockTime - now):0
+      return formateTime
+    },
+    finalBalance() {
+      // 当前时间大于解锁时间时，按钮亮起，bnb余额需要通过税率计算得出，否值直接显示接口获取余额
+      if (this.account && !this.timeRemain) {
+        const time =  moment().format('X') - this.unLockTime
+        const money = this.balance*(100 - taxFee(time))/ 100
+        return money
+      } else {
+        return this.balance
       }
     }
   },

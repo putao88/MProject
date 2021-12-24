@@ -27,7 +27,7 @@
     <div v-if="cardInfo.status === 'lock'" class="hero-card-info fs-4">
       Upgrade <br>
       Town Inn<br>
-      {{ cardInfo.townLevel }}
+      to Level {{ cardInfo.townLevel }}
     </div>
 
   </div>
