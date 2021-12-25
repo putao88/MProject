@@ -52,7 +52,6 @@ export default {
   computed: {
     ...mapState([
       'account',
-      'bnbhBalance'
     ]),
     recruitBtnClass: function () {
       return {

@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { loadBlockchainData } from '../metamask'
+import { loadBlockchainData, unLockTime, getBalance, getBnbhBalance } from '../metamask'
 import { mapState } from 'vuex'
 import { changeSecondsToHours, taxFee } from '@/utils'
 import moment from 'moment';
@@ -80,19 +80,22 @@ export default {
       page:this.$route.path,
       isConnected: true,
       showMetamask: false,
+      finalBalance:0 ,//最终奖励金额
+      timeRemain:0, //剩余解锁时间
+      bnbhBalance: 0,//bnbh余额
     }
   },
   watch:{
     $route(to,from){
       this.page = to.path
-    }
+    },
+    "$store.state.account"(newValue,oldValue) {
+      this.initData()
+    },
   },
   computed: {
     ...mapState([
       'account',
-      'balance',
-      'bnbhBalance',
-      'unLockTime',
     ]),
     claimBtnClass: function () {
       return {
@@ -104,27 +107,32 @@ export default {
         'btn-yellow': this.account && !this.timeRemain,
       }
     },
-    timeRemain() {
-      const now = moment().format('X')
-      // 计算锁定时间和当前时间差值
-      const formateTime = this.unLockTime > now ? changeSecondsToHours(this.unLockTime - now):0
-      return formateTime
-    },
-    finalBalance() {
-      // 当前时间大于解锁时间时，按钮亮起，bnb余额需要通过税率计算得出，否值直接显示接口获取余额
-      if (this.account && !this.timeRemain) {
-        const time =  moment().format('X') - this.unLockTime
-        const money = this.balance*(100 - taxFee(time))/ 100
-        return money
-      } else {
-        return this.balance
-      }
-    }
   },
   created() {
     this.openMetamask()
   },
   methods: {
+    async initData() {
+      // 判断当前账号是否连接，如果已经连接，则需要连接合约，查询数据
+      if(this.account) {
+        // 获取首次解锁时间
+        const openTime = await unLockTime()
+        // 获取余额
+        const balance = await getBalance()
+        const now = moment().format('X')
+        // 计算锁定时间和当前时间差值
+        const diffTime = openTime > now ? changeSecondsToHours(openTime - now):0
+        this.timeRemain = diffTime
+        // 当前时间大于解锁时间时，按钮亮起，bnb余额需要通过税率计算得出，否值直接显示接口获取余额
+        if (this.account && !diffTime) {
+          const time =  moment().format('X') - openTime
+          this.finalBalance = balance*(100 - taxFee(time))/ 100
+        } else {
+          this.finalBalance = balance
+        }
+        this.bnbhBalance = await getBnbhBalance()
+      }
+    },
     goBack() {
 			this.$router.push({ path: '/'})
     },

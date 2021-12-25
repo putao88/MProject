@@ -7,6 +7,7 @@ import bnbHeroAbi from '../abis/bnbHeroAbi'
 import bnbTokenAbi from '../abis/bnbTokenAbi'
 import bnbhPriceAbi from '../abis/bnbhPriceAbi'
 import { BigNumber } from 'ethers'
+import { bnbHeroPool, bnbHeroTokenPool } from './poolObject'
 
 
 /**
@@ -66,11 +67,8 @@ export const loadBlockchainData = async () => {
             } else {
                 store.commit('SET_ACCOUNT', accounts[0])
                 store.commit('SET_WEB3', web3)
-                await getBnbhBalance(web3, accounts[0])
-                await getBalance(web3, accounts[0])
                 await getHeroesByOwner(web3, accounts[0])
                 await getTownLevel(web3, accounts[0])
-                await unLockTime(web3, accounts[0])
                 return web3
             }
           } catch (e) {
@@ -132,11 +130,12 @@ export const checkApprove = async () => {
  * @param {*} account
  * @return {*}
  */
-export const getBnbhBalance = async (web3, account) => {
-  const pool = new web3.eth.Contract(bnbTokenAbi, bnbHeroToken)
+export const getBnbhBalance = async () => {
+  const { account }  = store.state
+  const pool = bnbHeroTokenPool()
   let data = await pool.methods.balanceOf(account).call()
   const bnbhBalance = formatUnits(data, 18)
-  store.commit('SET_BNBH_BALANCE',bnbhBalance)
+  return bnbhBalance
 }
 
 /**
@@ -145,11 +144,25 @@ export const getBnbhBalance = async (web3, account) => {
  * @param {*} account
  * @return {*}
  */
-export const getBalance = async (web3, account) => {
-  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
+export const getBalance = async () => {
+  const { account }  = store.state
+  const pool = bnbHeroPool()
   let data = await pool.methods.balances(account).call()
   const balance = formatUnits(data, 18)
-  store.commit('SET_BALANCE',balance)
+  return balance
+}
+
+
+/**
+ * @description: 获得到首次解锁时间，只有达到解锁时间，才能够领取奖励
+ * @param {*}
+ * @return {*}
+ */
+export const unLockTime = async () => {
+  const { account }  = store.state
+  const pool = bnbHeroPool()
+  const openTime = await pool.methods.unLockTime(account).call()
+  return openTime
 }
 
 
@@ -191,16 +204,5 @@ export const getHeroesByOwner = async (web3, account) => {
     townList.push(townLevel)
   }
   store.commit('SET_TOWNLIST',townList)
-}
-
-/**
- * @description: 获得到首次解锁时间，只有达到解锁时间，才能够领取奖励
- * @param {*}
- * @return {*}
- */
-export const unLockTime = async (web3, account) => {
-  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
-  const openTime = await pool.methods.unLockTime(account).call()
-  store.commit('SET_UNLOCKTIME',openTime)
 }
 
