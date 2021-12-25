@@ -3,50 +3,65 @@
     <img class="static-bg" src="@/assets/myreserve/myheroes-bg.jpg" alt="myreserve-background">
     <div class="page-title">My Reserve</div>
     <div class="heroes-card">
-      <div class="hero-item"  v-for="item in cardlist" :key="item.key">
-        <hero-card :cardInfo="item" />
+      <div class="hero-item"  v-for="item in cardList" :key="item.key">
+        <card :cardInfo="item" @initData="initData"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import HeroCard from './components/HeroCard'
+import Card from './components/Card'
 import { mapState } from 'vuex'
+import { getAllHeroesInMyserve } from '@/metamask/myreserve'
 
 export default {
   name:'myreserve',
-  components: { HeroCard },
+  components: { Card },
   data() {
     let defaultData = []
     for(let i=1; i<=20;i++) {
       const obj = {
         key:i,
-        status:"lock",
+        status:"pending",
         title:'',
       }
       defaultData.push(obj)
     }
     return {
-      cardlist: defaultData,
+      cardList: defaultData,
     }
   },
   computed:{
     ...mapState([
       'account',
+      'heroDatas',
     ]),
   },
   watch: {
     "$store.state.account"(newValue,oldValue) {
-      this.initCardData()
+      this.initData()
     },
   },
   mounted() {
-    this.initCardData()
+    this.initData()
   },
   methods: {
-    async initCardData() {
-      if (this.account) {}
+    async initData() {
+      if (this.account) {
+        // const heroes = await getAllHeroesInMyserve()
+        const heroes = this.heroDatas
+        let newCardList = []
+        for (let i=0; i<this.cardList.length; i++) {
+          let card = this.cardList[i]
+          if (i<heroes.length) {
+            card = {...heroes[i],...this.cardList[i]}
+            card.status = 'open'
+          }
+          newCardList.push(card)
+        }
+        this.cardList = newCardList
+      }
     }
   }
 }

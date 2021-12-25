@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <!-- 卡片头部 -->
     <div class="hero-card-title" v-if="cardInfo.status === 'open'">
       <div class="hero-level-info">LV.{{ cardInfo.level }}</div>
       <div class="hero-card-title-right">
@@ -14,31 +14,25 @@
     </div>
     <div style="height:43px" v-if="cardInfo.status != 'open'"></div>
 
-    <!-- 已召唤英雄渲染 -->
-    <HeroCard v-if="cardInfo.status === 'open'||cardInfo.status === 'approved'" :heroInfo="cardInfo" />
-    
-    <!-- 已经解锁卡槽，待召唤 -->
-    <div style="text-align:center" v-if="cardInfo.status === 'pending'">
-      <img src="@/assets/common/card.png" class="hero-card-img"/>
-      <div :class="recruitBtnClass" @click="recruit">Recruit</div>
+    <!-- 英雄渲染 -->
+    <HeroCard v-if="cardInfo.status === 'open'" :heroInfo="cardInfo" />
+    <div v-if="cardInfo.status === 'open'">
+      <div class="btn btn-yellow" style="width:100%" @click="moveToSolt(cardInfo.tokenId)">Move To Solt</div>
     </div>
 
-    <!-- 待解锁卡槽 -->
-    <img v-if="cardInfo.status === 'lock'" src="@/assets/common/card_lock.png" class="hero-card-img"/>
-    <div v-if="cardInfo.status === 'lock'" class="hero-card-info fs-4">
-      Upgrade <br>
-      Town Inn<br>
-      to Level {{ cardInfo.townLevel }}
+    <!-- 未渲染英雄卡片 -->
+    <div style="text-align:center" v-if="cardInfo.status === 'pending'">
+      <img src="@/assets/common/card.png" class="hero-card-img"/>
     </div>
 
   </div>
 </template>
 
 <script>
-import HeroCard from "./HeroCard";
+import HeroCard from "@/components/HeroCard";
 import { approve } from '@/metamask/index';
-import { createNewHero, unLock } from '@/metamask/myheroes';
-import { loadBlockchainData } from '@/metamask/index'
+import { unLock } from '@/metamask/myheroes';
+import { moveToSolt } from '@/metamask/myreserve'
 import { mapState } from 'vuex'
 export default {
   name: "Card",
@@ -56,15 +50,6 @@ export default {
     ...mapState([
       'account',
     ]),
-    recruitBtnClass: function () {
-      return {
-        'mt-5': true, 
-        'btn': true,
-        'disabled': !this.account,
-        'btn-dark': !this.account,
-        'btn-yellow': this.account,
-      }
-    },
     unlockBtnClass: function () {
       const isYellow = this.cardInfo.xp > (this.cardInfo.level*1000+999)
       return {
@@ -77,14 +62,14 @@ export default {
     }
   },
   methods: {
-    async recruit () {
-      const isApprove = await approve()
-      createNewHero()
-    },
     async unLock(heroId) {
       await unLock(heroId)
-      this.loadBlockchainData()
+      this.$emit('initData')
     },
+    async moveToSolt() {
+      await moveToSolt(heroId)
+      this.$emit('initData')
+    }
   },
 };
 </script>
