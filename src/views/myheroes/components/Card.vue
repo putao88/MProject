@@ -15,7 +15,7 @@
     <div style="height:43px" v-if="cardInfo.status != 'open'"></div>
 
     <!-- 已召唤英雄渲染 -->
-    <HeroCard v-if="cardInfo.status === 'open'" :heroInfo="cardInfo" />
+    <HeroCard v-if="cardInfo.status === 'open'||cardInfo.status === 'approved'" :heroInfo="cardInfo" @setApproveallHeroes="setApproveallHeroes"/>
     <!-- 已经解锁卡槽，待召唤 -->
     <div style="text-align:center" v-if="cardInfo.status === 'pending'">
       <img src="@/assets/common/card.png" class="hero-card-img"/>
@@ -35,7 +35,8 @@
 
 <script>
 import HeroCard from "./HeroCard";
-import { approve, createNewHero } from '@/metamask/index';
+import { approve } from '@/metamask/index';
+import { createNewHero } from '@/metamask/myheroes';
 import { mapState } from 'vuex'
 export default {
   name: "Card",
@@ -79,6 +80,9 @@ export default {
       createNewHero()
     },
     unclock() {},
+    setApproveallHeroes() {
+      this.$emit('setApproveallHeroes')
+    },
   },
 };
 </script>

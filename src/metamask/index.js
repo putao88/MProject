@@ -1,13 +1,9 @@
 import { Message } from 'element-ui';
 import store from '../store'
 import Web3 from 'web3'
-import { formatUnits } from 'ethers/lib/utils'
-import { bnbheroAddress, bnbHeroToken } from './data'
+import { bnbheroAddress } from './data'
 import bnbHeroAbi from '../abis/bnbHeroAbi'
-import bnbTokenAbi from '../abis/bnbTokenAbi'
-import bnbhPriceAbi from '../abis/bnbhPriceAbi'
 import { BigNumber } from 'ethers'
-import { bnbHeroPool, bnbHeroTokenPool } from './poolObject'
 
 
 /**
@@ -123,62 +119,6 @@ export const checkApprove = async () => {
   }
   return false
 }
-
-/**
- * @description: 获取bnbh余额
- * @param {*} web3
- * @param {*} account
- * @return {*}
- */
-export const getBnbhBalance = async () => {
-  const { account }  = store.state
-  const pool = bnbHeroTokenPool()
-  let data = await pool.methods.balanceOf(account).call()
-  const bnbhBalance = formatUnits(data, 18)
-  return bnbhBalance
-}
-
-/**
- * @description: 获取余额
- * @param {*} web3
- * @param {*} account
- * @return {*}
- */
-export const getBalance = async () => {
-  const { account }  = store.state
-  const pool = bnbHeroPool()
-  let data = await pool.methods.balances(account).call()
-  const balance = formatUnits(data, 18)
-  return balance
-}
-
-
-/**
- * @description: 获得到首次解锁时间，只有达到解锁时间，才能够领取奖励
- * @param {*}
- * @return {*}
- */
-export const unLockTime = async () => {
-  const { account }  = store.state
-  const pool = bnbHeroPool()
-  const openTime = await pool.methods.unLockTime(account).call()
-  return openTime
-}
-
-
-//  createNewHero（创建英雄）->expediteHero（加速到达战场，不然要12小时后才能战斗->getHeroesByOwner（获得玩家英雄，数组结构）
-/**
- * @description: 创建英雄
- * @param {*}
- * @return {*}
- */
-
- export const createNewHero = async () => {
-  const { web3, account, approved }  = store.state
-  if(!approved) approve()
-  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
-  let result = await pool.methods.createNewHero()
- } 
 
 /**
  * @description: 获得玩家英雄

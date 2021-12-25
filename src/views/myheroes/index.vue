@@ -4,7 +4,7 @@
     <div class="page-title">My Heroes</div>
     <div class="heroes-card">
       <div class="hero-item"  v-for="item in cardList" :key="item.key">
-        <card :cardInfo="item"/>
+        <card :cardInfo="item" @setApproveallHeroes="setApproveallHeroes"/>
       </div>
     </div>
   </div>
@@ -13,6 +13,7 @@
 <script>
 import Card from './components/Card'
 import { getHeroesByOwner } from '@/metamask/index'
+import { isApprovedForAll, setApproveallHeroes } from '@/metamask/myheroes'
 import { mapState } from 'vuex'
 
 export default {
@@ -30,10 +31,11 @@ export default {
     }
   },
   computed:{
-    ...mapState({
-      heroDatas: state => state.heroDatas,
-      townList: state => state.townList,
-    }),
+    ...mapState([
+      'account',
+      'heroDatas',
+      'townList',
+    ]),
   },
   watch: {
     "$store.state.heroDatas"(newValue,oldValue) {
@@ -44,22 +46,31 @@ export default {
     this.initCardData()
   },
   methods: {
-    initCardData() {
-      let cardData = []
-      for (let i=0; i<this.cardList.length; i++) {
-        let obj = this.cardList[i]
-        // 渲染英雄
-        if (i<this.heroDatas.length) {
-          obj = {...obj,...this.heroDatas[i]}
-          obj.status = "open"
+    async initCardData() {
+      if (this.account) {
+        let cardData = []
+        const isApproved = await isApprovedForAll()
+        // 卡槽总共四种状态：lock:锁定；pending:等待召唤英雄； pengding:有英雄了待approved, approved:英雄已经approved
+        for (let i=0; i<this.cardList.length; i++) {
+          let obj = this.cardList[i]
+          // 渲染英雄
+          if (i<this.heroDatas.length) {
+            obj = {...obj,...this.heroDatas[i]}
+            obj.status = "open"
+            if (isApproved) obj.status = "approved"
+          }
+          // 渲染待召唤卡槽
+          if (this.heroDatas.length<= i && i<=parseInt(this.townList[1]*1+1)) {
+            obj.status = "pending"
+          }
+          cardData.push(obj)
         }
-        // 渲染待召唤卡槽
-        if (this.heroDatas.length<= i && i<=parseInt(this.townList[1]*1+1)) {
-          obj.status = "pending"
-        }
-        cardData.push(obj)
+        this.cardList = cardData
       }
-      this.cardList = cardData
+    },
+    async setApproveallHeroes() {
+      const res = await setApproveallHeroes()
+      this.initCardData()
     },
   },
 }

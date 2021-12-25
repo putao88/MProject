@@ -68,7 +68,9 @@
 </template>
 
 <script>
-import { loadBlockchainData, unLockTime, getBalance, getBnbhBalance } from '../metamask'
+import { loadBlockchainData } from '../metamask'
+import { unLockTime, getBalance, getBnbhBalance } from '../metamask/home'
+
 import { mapState } from 'vuex'
 import { changeSecondsToHours, taxFee } from '@/utils'
 import moment from 'moment';

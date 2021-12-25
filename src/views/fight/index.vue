@@ -80,9 +80,9 @@ export default {
     };
   },
   computed:{
-    ...mapState({
-      heroDatas: state => state.heroDatas,
-    }),
+    ...mapState([
+      'heroDatas'
+    ]),
   },
   watch: {
     "$store.state.heroDatas"(newValue,oldValue) {

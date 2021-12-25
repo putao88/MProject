@@ -37,7 +37,12 @@
         <div class="btn btn-green me-1 w-100" @click="toFight(heroInfo.tokenId)">FIGHT</div>
         <div class="btn btn-red w-100 disabled">SELL</div>
       </div>
-      <div class="approve">Approve BNBH</div>
+      <div>
+        <div class="btn btn-red" style="width:100%" v-if="heroInfo.status === 'open'" @click="setApproveallHeroes">Approve BNBH</div>
+      </div>
+      <div>
+        <div class="btn btn-yellow" style="width:100%" v-if="heroInfo.status === 'approved'">Move To Reserve</div>
+      </div>
     </div>
   </div>
 </template>
@@ -57,6 +62,9 @@ export default {
         path: 'fight',
         query: { tokenId }
       });
+    },
+    setApproveallHeroes() {
+      this.$emit('setApproveallHeroes')
     }
   },
 };
@@ -115,23 +123,13 @@ export default {
         top: 0;
       }
     }
-      .description {
-        text-align: center;
-        padding: 0.5rem 0;
-        > div {
-          width: 54px;
-        }
+    .description {
+      text-align: center;
+      padding: 0.5rem 0;
+      > div {
+        width: 54px;
       }
-      .approve {
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        padding: 5px 20px 8px;
-        justify-content: space-around;
-        background-image: url('~@/assets/market/approve.png');
-        text-transform: uppercase;
-        color: #680b0c;
-        margin-top: 0.5rem;
-      }
+    }
   }
 }
 </style>
