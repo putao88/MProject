@@ -49,8 +49,7 @@ export default {
   methods: {
     async initData() {
       if (this.account) {
-        // const heroes = await getAllHeroesInMyserve()
-        const heroes = this.heroDatas
+        const heroes = await getAllHeroesInMyserve()
         let newCardList = []
         for (let i=0; i<this.cardList.length; i++) {
           let card = this.cardList[i]

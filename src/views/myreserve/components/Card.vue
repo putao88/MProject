@@ -1,21 +1,10 @@
 <template>
   <div>
-    <!-- 卡片头部 -->
-    <div class="hero-card-title" v-if="cardInfo.status === 'open'">
-      <div class="hero-level-info">LV.{{ cardInfo.level }}</div>
-      <div class="hero-card-title-right">
-        <div class="hero-xp-info">
-           XP: {{ cardInfo.xp }}/{{ cardInfo.level*1000+999 }}
-        </div>
-        <div :class="unlockBtnClass" @click="unLock(cardInfo.tokenId)">
-          Unlock LV.{{ cardInfo.level*1+1 }}
-        </div>
-      </div>
-    </div>
     <div style="height:43px" v-if="cardInfo.status != 'open'"></div>
 
     <!-- 英雄渲染 -->
     <HeroCard v-if="cardInfo.status === 'open'" :heroInfo="cardInfo" />
+
     <div v-if="cardInfo.status === 'open'">
       <div class="btn btn-yellow" style="width:100%" @click="moveToSolt(cardInfo.tokenId)">Move To Solt</div>
     </div>
@@ -75,26 +64,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.hero-card-title {
-  justify-content: space-between;
-  display: flex;
-  .hero-level-info {
-    font-size: 30px;
-    color: #fff;
-    height: 40px;
-  }
-  .hero-card-title-right {
-    align-items: center;
-    flex-direction: column;
-    display: flex;
-    .hero-xp-info {
-      line-height: 1.5;
-      font-size: 14px;
-      color: #b7b1b5;
-    }
-  }
-}
-
 .hero-card-img {
   width: 100%;
   margin: auto;

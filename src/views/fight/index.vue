@@ -8,10 +8,13 @@
         <div class="choose-title">Choose Hero</div>
         <div class="hero-container">
           <div class="left-arrow"  @click="previous('curHeroIndex','heroDatas')"></div>
-          <HeroCard :heroInfo="heroDatas[curHeroIndex]" />
+          <div class="hero-item" style="min-width:300px;height:620px">
+            <HeroCard :heroInfo="heroDatas[curHeroIndex]" />
+          </div>
           <div class="right-arrow" @click="next('curHeroIndex','heroDatas')"></div>
         </div>
       </div>
+
       <!-- 敌人主要内容 -->
       <div class="fight-body">
         <div class="fight-container">
@@ -51,7 +54,7 @@
 <script>
 import FightCard from "./components/FightCard";
 import BossFight from "./components/BossFight";
-import HeroCard from "./components/HeroCard";
+import HeroCard from "@/components/HeroCard";
 import { mapState } from 'vuex'
 
 export default {
@@ -83,6 +86,16 @@ export default {
     ...mapState([
       'heroDatas'
     ]),
+    unlockBtnClass: function () {
+      const isYellow = this.heroDatas[this.curHeroIndex].xp > (this.heroDatas[this.curHeroIndex].level*1000+999)
+      return {
+        'unlock-btn': true, 
+        'btn': true,
+        'disabled': !isYellow,
+        'btn-dark': !isYellow,
+        'btn-yellow': isYellow,
+      }
+    }
   },
   watch: {
     "$store.state.heroDatas"(newValue,oldValue) {
@@ -169,6 +182,15 @@ export default {
       justify-content: center;
       width: 100%;
       display: flex;
+      .hero-item {
+        background-color: #282334;
+        border: 3px solid #000;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 0.5rem;
+        width: 15%;
+        min-width: 250px;
+      }
     }
   }
   .fight-body {

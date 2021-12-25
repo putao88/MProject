@@ -1,36 +1,50 @@
 <template>
-  <div class="hero-card-container">
-    <img class="card-img" src="https://play.bnbheroes.io/cards/11.png" alt="" />
-    <div class="card-id">NFT# {{ heroInfo.tokenId }}</div>
-    <div class="card-info">
-      <div class="progress">
-        <el-progress :text-inside="true" :stroke-width="16" :percentage="parseInt(heroInfo.hp)/10" status="exception"></el-progress>
-        <div class="hp-progress-detail">HP: {{heroInfo.hp}}/1000</div>
+  <div>
+    <!-- 卡片头部 -->
+    <div class="hero-card-title">
+      <div class="hero-level-info">LV.{{ heroInfo.level }}</div>
+      <div class="hero-card-title-right">
+        <div class="hero-xp-info">
+           XP: {{ heroInfo.xp }}/{{ heroInfo.level*1000+999 }}
+        </div>
+        <div :class="unlockBtnClass" @click="unLock(heroInfo.tokenId)">
+          Unlock LV.{{ heroInfo.level*1+1 }}
+        </div>
       </div>
-      <div class="description">
-        <div>
-          <img
-            src="@/assets/market/sword.png"
-            height="30px"
-            alt="attack"
-          />  
-          <span>{{ heroInfo.attack }}</span>
+    </div>
+    <div class="hero-card-container">
+      <img class="card-img" src="https://play.bnbheroes.io/cards/11.png" alt="" />
+      <div class="card-id">NFT# {{ heroInfo.tokenId }}</div>
+      <div class="card-info">
+        <div class="progress">
+          <el-progress :text-inside="true" :stroke-width="16" :percentage="parseInt(heroInfo.hp)/10" status="exception"></el-progress>
+          <div class="hp-progress-detail">HP: {{heroInfo.hp}}/1000</div>
         </div>
-        <div>
-          <img
-            src="@/assets/market/shield.png"
-            height="30px"
-            alt="armor"
-          />
-          <span>{{ heroInfo.armor }}</span>
-        </div>
-        <div>
-          <img
-            src="@/assets/market/shose.png"
-            height="30px"
-            alt="attack"
-          />
-          <span>{{ heroInfo.speed }}</span>
+        <div class="description">
+          <div>
+            <img
+              src="@/assets/market/sword.png"
+              height="30px"
+              alt="attack"
+            />  
+            <span>{{ heroInfo.attack }}</span>
+          </div>
+          <div>
+            <img
+              src="@/assets/market/shield.png"
+              height="30px"
+              alt="armor"
+            />
+            <span>{{ heroInfo.armor }}</span>
+          </div>
+          <div>
+            <img
+              src="@/assets/market/shose.png"
+              height="30px"
+              alt="attack"
+            />
+            <span>{{ heroInfo.speed }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -38,19 +52,57 @@
 </template>
 
 <script>
+import { unLock } from '@/metamask/myheroes';
+import { mapState } from 'vuex'
+
 export default {
   name: "HeroCard",
   props: {
-    heroInfo: {
-      type: Object,
-      default: {}
+    heroInfo:[Object,Array]
+  },
+  computed: {
+    ...mapState([
+      'account',
+    ]),
+    unlockBtnClass: function () {
+      const isYellow = this.heroInfo.xp > (this.heroInfo.level*1000+999)
+      return {
+        'unlock-btn': true, 
+        'btn': true,
+        'disabled': !isYellow,
+        'btn-dark': !isYellow,
+        'btn-yellow': isYellow,
+      }
     }
   },
-  methods: {},
+  methods: {
+    async unLock(heroId) {
+      await unLock(heroId)
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+.hero-card-title {
+  justify-content: space-between;
+  display: flex;
+  .hero-level-info {
+    font-size: 30px;
+    color: #fff;
+    height: 40px;
+  }
+  .hero-card-title-right {
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    .hero-xp-info {
+      line-height: 1.5;
+      font-size: 14px;
+      color: #b7b1b5;
+    }
+  }
+}
 .hero-card-container {
   .card-img {
     width: 100%;
