@@ -12,28 +12,41 @@
 
 <script>
 import HeroCard from './components/HeroCard'
+import { mapState } from 'vuex'
 
 export default {
   name:'myreserve',
   components: { HeroCard },
   data() {
+    let defaultData = []
+    for(let i=1; i<=20;i++) {
+      const obj = {
+        key:i,
+        status:"lock",
+        title:'',
+      }
+      defaultData.push(obj)
+    }
     return {
-      cardlist:[
-        {key:'1',status:'open',title:''},
-        {key:'2',status:'open',title:''},
-        {key:'3',status:'lock',title:''},
-        {key:'4',status:'lock',title:''},
-        {key:'5',status:'lock',title:''},
-        {key:'6',status:'lock',title:''},
-        {key:'7',status:'lock',title:''},
-        {key:'8',status:'lock',title:''},
-        {key:'9',status:'lock',title:''},
-        {key:'10',status:'lock',title:''},
-        {key:'11',status:'lock',title:''},
-        {key:'12',status:'lock',title:''},
-        {key:'13',status:'lock',title:''},
-        {key:'14',status:'lock',title:''},
-      ]
+      cardlist: defaultData,
+    }
+  },
+  computed:{
+    ...mapState([
+      'account',
+    ]),
+  },
+  watch: {
+    "$store.state.account"(newValue,oldValue) {
+      this.initCardData()
+    },
+  },
+  mounted() {
+    this.initCardData()
+  },
+  methods: {
+    async initCardData() {
+      if (this.account) {}
     }
   }
 }

@@ -4,7 +4,7 @@
     <div class="page-title">My Heroes</div>
     <div class="heroes-card">
       <div class="hero-item"  v-for="item in cardList" :key="item.key">
-        <card :cardInfo="item" @setApproveallHeroes="setApproveallHeroes"/>
+        <card :cardInfo="item" />
       </div>
     </div>
   </div>
@@ -13,7 +13,7 @@
 <script>
 import Card from './components/Card'
 import { getHeroesByOwner } from '@/metamask/index'
-import { isApprovedForAll, setApproveallHeroes } from '@/metamask/myheroes'
+import { isApprovedForAll } from '@/metamask/myheroes'
 import { mapState } from 'vuex'
 
 export default {
@@ -67,10 +67,6 @@ export default {
         }
         this.cardList = cardData
       }
-    },
-    async setApproveallHeroes() {
-      const res = await setApproveallHeroes()
-      this.initCardData()
     },
   },
 }

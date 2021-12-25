@@ -41,13 +41,17 @@
         <div class="btn btn-red" style="width:100%" v-if="heroInfo.status === 'open'" @click="setApproveallHeroes">Approve BNBH</div>
       </div>
       <div>
-        <div class="btn btn-yellow" style="width:100%" v-if="heroInfo.status === 'approved'">Move To Reserve</div>
+        <div class="btn btn-yellow" style="width:100%" v-if="heroInfo.status === 'approved'" @click="moveHeroToMyreserve(heroInfo.tokenId)">Move To Reserve</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { setApproveallHeroes, moveHeroToMyreserve } from '@/metamask/myheroes'
+import { loadBlockchainData } from '@/metamask/index'
+
+
 export default {
   name: "HeroCard",
   props: {
@@ -63,8 +67,13 @@ export default {
         query: { tokenId }
       });
     },
-    setApproveallHeroes() {
-      this.$emit('setApproveallHeroes')
+    async setApproveallHeroes() {
+      await setApproveallHeroes()
+      this.loadBlockchainData()
+    },
+    async moveHeroToMyreserve(heroId) {
+      await moveHeroToMyreserve(heroId)
+      this.loadBlockchainData()
     }
   },
 };

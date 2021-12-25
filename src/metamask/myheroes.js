@@ -1,5 +1,5 @@
 import store from '../store'
-import { bnbhCharacterPool } from './poolObject'
+import { bnbhCharacterPool, bnbHeroPool } from './poolObject'
 import { bnbheroAddress } from './data'
 
 
@@ -41,3 +41,27 @@ export const setApproveallHeroes = async () => {
   const isApproved = await pool.methods.setApprovalForAll(bnbheroAddress,true).call()
   return isApproved
 }
+
+/**
+ * @description: 把英雄放入仓库
+ * @param {*}
+ * @return {*}
+ */
+export const moveHeroToMyreserve = async (heroId) => {
+  const pool = bnbHeroPool()
+  const isMoved = await pool.methods.moveHeroToBag(heroId).call()
+  return isMoved
+}
+
+/**
+ * @description: 解锁英雄
+ * @param {*}
+ * @return {*}
+ */
+export const unLock = async (heroId) => {
+  const pool = bnbhCharacterPool()
+  const isUnlock = await pool.methods.unLockLevel(heroId).call()
+  return isUnlock
+}
+
+
