@@ -81,8 +81,8 @@ export default {
       return {
         'fight-btn': true, 
         'btn': true,
+        'btn-yellow': true,
         'disabled': !this.isFight,
-        'btn-yellow': this.isFight,
       }
     }
   },

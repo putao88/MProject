@@ -162,6 +162,7 @@ export const getHeroesByOwner = async (web3, account) => {
 export const getTownsOfPlayer = async (web3, account) => {
   const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
   const townsOfPlayer = await pool.methods.getTownsOfPlayer(account).call()
+  console.log('allTownDatas:',townsOfPlayer)
   let townList = []
   let townUpTime = []
   let townUpPrice = []
@@ -201,6 +202,7 @@ export const getTownUpgradePrice = async (kind,level) => {
 export const upgradeTown = async (townType) => {
   const { web3, account } = store.state
   const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
+  console.log('upgradeTown:',townType)
   const res = await pool.methods.upgradeTown(townType).send({ from: account })
   if (res.status) {
     getTownsOfPlayer(web3, account)
