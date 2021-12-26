@@ -1,6 +1,9 @@
 import store from '../store'
 import { bnbHeroPool, bnbHeroTokenPool } from './poolObject'
 import { formatUnits } from 'ethers/lib/utils'
+import { bnbheroAddress, bnbHeroToken, bnbhPriceOracle, bnbhCharacter } from './data'
+import bnbHeroAbi from '../abis/bnbHeroAbi'
+import bnbTokenAbi from '../abis/bnbTokenAbi'
 
 
 
@@ -10,11 +13,11 @@ import { formatUnits } from 'ethers/lib/utils'
  * @param {*} account
  * @return {*}
  */
-export const getBnbhBalance = async () => {
-  const { account }  = store.state
-  const pool = bnbHeroTokenPool()
+export const getBnbhBalance = async (web3, account) => {
+  const pool = new web3.eth.Contract(bnbTokenAbi, bnbHeroToken)
   let data = await pool.methods.balanceOf(account).call()
   const bnbhBalance = formatUnits(data, 18)
+  store.commit('SET_BNBHBALANCE', bnbhBalance)
   return bnbhBalance
 }
 
@@ -24,11 +27,11 @@ export const getBnbhBalance = async () => {
  * @param {*} account
  * @return {*}
  */
-export const getBalance = async () => {
-  const { account }  = store.state
-  const pool = bnbHeroPool()
+export const getBalance = async (web3, account) => {
+  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
   let data = await pool.methods.balances(account).call()
   const balance = formatUnits(data, 18)
+  store.commit('SET_BALANCE', balance)
   return balance
 }
 

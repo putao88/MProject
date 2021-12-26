@@ -14,6 +14,8 @@ const state = {
   heroIdList:[], //myreserve页面的英雄ID
   heroInMyreserve:[], //myreserve页面的所有英雄
   isApprovedForAll: false, //所有英雄是否已经授权
+  balance: 0, //余额
+  bnbhBalance: 0, //bnbh余额
 }
 
 const mutations = {
@@ -46,6 +48,12 @@ const mutations = {
   },
   SET_ISAPPROVEDFORALL: (state, payload) => {
     state.isApprovedForAll = payload
+  },
+  SET_BALANCE: (state, payload) => {
+    state.balance = payload
+  },
+  SET_BNBHBALANCE: (state, payload) => {
+    state.bnbhBalance = payload
   },
 
 }

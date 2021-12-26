@@ -20,7 +20,6 @@
 <script>
 import HeroCard from "@/components/HeroCard";
 import { approve } from '@/metamask/index';
-import { unLock } from '@/metamask/myheroes';
 import { moveToSolt } from '@/metamask/myreserve'
 import { mapState } from 'vuex'
 export default {
@@ -51,10 +50,6 @@ export default {
     }
   },
   methods: {
-    async unLock(heroId) {
-      await unLock(heroId)
-      this.$emit('initData')
-    },
     async moveToSolt() {
       await moveToSolt(heroId)
       this.$emit('initData')

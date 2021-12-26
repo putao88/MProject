@@ -69,7 +69,7 @@
 
 <script>
 import { loadBlockchainData } from '../metamask'
-import { unLockTime, getBalance, getBnbhBalance } from '../metamask/home'
+import { unLockTime } from '../metamask/home'
 
 import { mapState } from 'vuex'
 import { changeSecondsToHours, taxFee } from '@/utils'
@@ -84,7 +84,6 @@ export default {
       showMetamask: false,
       finalBalance:0 ,//最终奖励金额
       timeRemain:0, //剩余解锁时间
-      bnbhBalance: 0,//bnbh余额
     }
   },
   watch:{
@@ -94,10 +93,15 @@ export default {
     "$store.state.account"(newValue,oldValue) {
       this.initData()
     },
+    "$store.state.balance"(newValue,oldValue) {
+      this.initData()
+    },
   },
   computed: {
     ...mapState([
       'account',
+      'bnbhBalance',
+      'balance'
     ]),
     claimBtnClass: function () {
       return {
@@ -120,7 +124,6 @@ export default {
         // 获取首次解锁时间
         const openTime = await unLockTime()
         // 获取余额
-        const balance = await getBalance()
         const now = moment().format('X')
         // 计算锁定时间和当前时间差值
         const diffTime = openTime > now ? changeSecondsToHours(openTime - now):0
@@ -128,11 +131,10 @@ export default {
         // 当前时间大于解锁时间时，按钮亮起，bnb余额需要通过税率计算得出，否值直接显示接口获取余额
         if (this.account && !diffTime) {
           const time =  moment().format('X') - openTime
-          this.finalBalance = balance*(100 - taxFee(time))/ 100
+          this.finalBalance = this.balance*(100 - taxFee(time))/ 100
         } else {
-          this.finalBalance = balance
+          this.finalBalance = this.balance
         }
-        this.bnbhBalance = await getBnbhBalance()
       }
     },
     goBack() {

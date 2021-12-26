@@ -2,6 +2,11 @@ import store from '../store'
 import { bnbheroAddress, bnbhCharacter } from './data'
 import { bnbhCharacterPool, bnbHeroPool } from './poolObject'
 import bnbhCharacterAbi from '../abis/bnbhCharacterAbi'
+import bnbHeroAbi from '../abis/bnbHeroAbi'
+import { getBnbhBalance, getBalance } from './home'
+import { getHeroesByOwner } from './index'
+
+
 
 // ---------------------------------myheroes页面
 
@@ -41,6 +46,8 @@ export const setApproveallHeroes = async () => {
   const res = await pool.methods.setApprovalForAll(bnbheroAddress,true).send({ from: account })
   if (res.status) {
     getIsApprovedForAll(web3, account)
+    getBnbhBalance(web3, account)
+    getBalance(web3, account)
   }
 }
 
@@ -50,9 +57,12 @@ export const setApproveallHeroes = async () => {
  * @return {*}
  */
 export const moveHeroToMyreserve = async (heroId) => {
-  const pool = bnbHeroPool()
-  const isMoved = await pool.methods.moveHeroToBag(heroId).call()
-  return isMoved
+  const { web3, account } = store.state
+  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
+  const res = await pool.methods.moveHeroToBag(heroId).send({ from: account })
+  if (res.status) {
+    await getHeroesByOwner(web3, account)
+  }
 }
 
 /**
@@ -61,9 +71,12 @@ export const moveHeroToMyreserve = async (heroId) => {
  * @return {*}
  */
 export const unLock = async (heroId) => {
-  const pool = bnbhCharacterPool()
-  const isUnlock = await pool.methods.unLockLevel(heroId).call()
-  return isUnlock
+  const { web3, account } = store.state
+  const pool =  new web3.eth.Contract(bnbhCharacterAbi, bnbhCharacter)
+  const res = await pool.methods.unLockLevel(heroId).send({ from: account })
+  if (res.status) {
+    await getHeroesByOwner(web3, account)
+  }
 }
 
 

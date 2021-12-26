@@ -43,7 +43,6 @@ import HeroCard from "@/components/HeroCard";
 import { approve } from '@/metamask/index';
 import { createNewHero } from '@/metamask/myheroes';
 import { setApproveallHeroes, moveHeroToMyreserve } from '@/metamask/myheroes'
-import { loadBlockchainData } from '@/metamask/index'
 import { mapState } from 'vuex'
 export default {
   name: "Card",
@@ -87,7 +86,6 @@ export default {
     },
     async moveHeroToMyreserve(heroId) {
       await moveHeroToMyreserve(heroId)
-      loadBlockchainData()
     }
   },
 };

@@ -10,6 +10,8 @@ import bnbhPriceAbi from '../abis/bnbhPriceAbi'
 import { BigNumber } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import { getIsApprovedForAll } from './myheroes'
+import { getBnbhBalance, getBalance } from './home'
+
 
 
 
@@ -74,6 +76,8 @@ export const loadBlockchainData = async () => {
                 await getTownsOfPlayer(web3, accounts[0])
                 await checkApprove(web3, accounts[0])
                 await getIsApprovedForAll(web3, accounts[0])
+                await getBnbhBalance(web3, accounts[0])
+                await getBalance(web3, accounts[0])
                 return web3
             }
           } catch (e) {
@@ -104,6 +108,8 @@ export const approve = async () => {
   const res = await pool.methods.approve(bnbheroAddress, uint256MAX).send({ from: account })
   if (res.status) {
     checkApprove(web3, account)
+    getBnbhBalance(web3, account)
+    getBalance(web3, account)
   }
 }
 
@@ -198,6 +204,8 @@ export const upgradeTown = async (townType) => {
   const res = await pool.methods.upgradeTown(townType).send({ from: account })
   if (res.status) {
     getTownsOfPlayer(web3, account)
+    getBnbhBalance(web3, account)
+    getBalance(web3, account)
   }
 }
 
