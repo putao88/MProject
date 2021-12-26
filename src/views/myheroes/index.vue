@@ -13,7 +13,7 @@
 <script>
 import Card from './components/Card'
 import { getHeroesByOwner } from '@/metamask/index'
-import { isApprovedForAll } from '@/metamask/myheroes'
+import moment from 'moment';
 import { mapState } from 'vuex'
 
 export default {
@@ -35,10 +35,15 @@ export default {
       'account',
       'heroDatas',
       'townList',
+      'townUpTime',
+      'isApprovedForAll',
     ]),
   },
   watch: {
     "$store.state.heroDatas"(newValue,oldValue) {
+      this.initCardData()
+    },
+    "$store.state.isApprovedForAll"(newValue,oldValue) {
       this.initCardData()
     },
   },
@@ -49,7 +54,6 @@ export default {
     async initCardData() {
       if (this.account) {
         let cardData = []
-        const isApproved = await isApprovedForAll()
         // 卡槽总共四种状态：lock:锁定；pending:等待召唤英雄； pengding:有英雄了待approved, approved:英雄已经approved
         for (let i=0; i<this.cardList.length; i++) {
           let obj = this.cardList[i]
@@ -57,9 +61,10 @@ export default {
           if (i<this.heroDatas.length) {
             obj = {...obj,...this.heroDatas[i]}
             obj.status = "open"
-            if (isApproved) obj.status = "approved"
+            if (this.isApprovedForAll) obj.status = "approved"
           }
           // 渲染待召唤卡槽
+          let level = this.townUpTime[1]  > moment().format('X') ? this.townList[1]*1 : parseInt(this.townList[1]*1+1)
           if (this.heroDatas.length<= i && i<=parseInt(this.townList[1]*1+1)) {
             obj.status = "pending"
           }

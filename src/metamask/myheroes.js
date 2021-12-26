@@ -1,7 +1,7 @@
 import store from '../store'
+import { bnbheroAddress, bnbhCharacter } from './data'
 import { bnbhCharacterPool, bnbHeroPool } from './poolObject'
-import { bnbheroAddress } from './data'
-
+import bnbhCharacterAbi from '../abis/bnbhCharacterAbi'
 
 // ---------------------------------myheroes页面
 
@@ -23,10 +23,10 @@ export const createNewHero = async () => {
  * @param {*}
  * @return {*}
  */
-export const isApprovedForAll = async () => {
-  const { account }  = store.state
-  const pool = bnbhCharacterPool()
+export const getIsApprovedForAll = async (web3,account) => {
+  const pool = new web3.eth.Contract(bnbhCharacterAbi, bnbhCharacter)
   const isApproved = await pool.methods.isApprovedForAll(account,bnbheroAddress).call()
+  store.commit('SET_ISAPPROVEDFORALL', isApproved)
   return isApproved
 }
 
@@ -36,10 +36,12 @@ export const isApprovedForAll = async () => {
  * @return {*}
  */
 export const setApproveallHeroes = async () => {
-  const { account }  = store.state
+  const { web3, account }  = store.state
   const pool = bnbhCharacterPool()
-  const isApproved = await pool.methods.setApprovalForAll(bnbheroAddress,true).call()
-  return isApproved
+  const res = await pool.methods.setApprovalForAll(bnbheroAddress,true).send({ from: account })
+  if (res.status) {
+    getIsApprovedForAll(web3, account)
+  }
 }
 
 /**

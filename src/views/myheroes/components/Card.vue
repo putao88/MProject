@@ -84,7 +84,6 @@ export default {
     },
     async setApproveallHeroes() {
       await setApproveallHeroes()
-      loadBlockchainData()
     },
     async moveHeroToMyreserve(heroId) {
       await moveHeroToMyreserve(heroId)

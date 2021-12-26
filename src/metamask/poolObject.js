@@ -2,7 +2,6 @@ import store from '../store'
 import { bnbheroAddress, bnbHeroToken, bnbhCharacter } from './data'
 import bnbHeroAbi from '../abis/bnbHeroAbi'
 import bnbTokenAbi from '../abis/bnbTokenAbi'
-import bnbhPriceAbi from '../abis/bnbhPriceAbi'
 import bnbhCharacterAbi from '../abis/bnbhCharacterAbi'
 
 /**

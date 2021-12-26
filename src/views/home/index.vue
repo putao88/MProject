@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <Upgrade @closeModel="closeModel" v-show="showUpgrade" />
+    <Upgrade @closeModel="closeModel" v-if="showUpgrade" />
 
   </div>
 </template>

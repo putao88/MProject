@@ -5,19 +5,30 @@
       <div class="close" @click="closeModel()"></div>
       <div class="body">
         <div class="body-img">
-          <div class="arrow left-arrow"></div>
+          <div class="arrow left-arrow" @click="previous"></div>
           <img class="upgrade-img" src="@/assets/home/house.png" alt />
-          <div class="arrow right-arrow"> </div>
+          <div class="arrow right-arrow" @click="next"> </div>
         </div>
 
         <div class="upgrade-des">
-          <div class="upgrade-level">LEVEL 2</div>
-          <div class="upgrade-xp">+3% BNB rewards</div>
-          <div class="upgrade-name" style="height:60px">Bank</div>
-          <div>Use 1503.98 BNBH to upgrade town</div>
-          <div>The town will be upgraded to next level in 24 hours</div>
-          <div class="btn-wrap">
-            <div class="btn btn-green upgrade-btn">UPGRADE TOWN</div>
+
+          <div class="upgrade-level">LEVEL {{curGradeInfo.level}}</div>
+          <div class="upgrade-xp" v-if="curGradeInfo.status != '5'">{{curGradeInfo.levelDetail}}</div>
+
+          <div class="upgrade-name" style="height:60px">{{curGradeInfo.name}}</div>
+          <!-- 满级提示 -->
+          <div v-if="curGradeInfo.status === '5'">This building was fully upgraded</div>
+          <!-- 升级价格 -->
+          <div v-if="curGradeInfo.status === '2' || curGradeInfo.status === '4'">Use {{curGradeInfo.price}} BNBH to upgrade town</div>
+          <!-- 升级时间 -->
+          <div v-if="curGradeInfo.status != '1' && curGradeInfo.status != '5'">The town will be upgraded to next level in {{curGradeInfo.time}} hours</div>
+          <!-- approve按钮 -->
+          <div class="btn-wrap" v-if="curGradeInfo.status === '2'">
+            <div class="btn btn-yellow upgrade-btn" @click="approve">APPROVE</div>
+          </div>
+          <!-- 升级按钮 -->
+          <div class="btn-wrap" v-if="curGradeInfo.status === '3'||curGradeInfo.status === '4'">
+            <div :class="upgradeBtnClass" @click="upgradeTown">UPGRADE TOWN</div>
           </div>
         </div>
       </div>
@@ -26,14 +37,114 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import moment from 'moment';
+import { approve, upgradeTown } from '@/metamask/index'
+import { changeSecondsToHours } from '@/utils'
+
 export default {
   name: "Upgrade",
   data() {
-    return {};
+    const defaultList = [
+        {status:'1',level:'2',name:'BANK',levelDetail:'+3% BNB rewards',price:'',time:'24'},
+        {status:'1',level:'2',name:'TOWN INN',levelDetail:'-5% HP Loss/Max Hero Cap 3',price:'',time:'24'},
+        {status:'1',level:'2',name:'BARRACKS',levelDetail:'+30 XP on all fights',price:'',time:'24'},
+        {status:'1',level:'2',name:'TRAINING GROUND',levelDetail:'+30 Attack +30 Armor +30 Speed',price:'',time:'24'},
+      ]
+    return {
+      curIndex: 0,
+      defaultList,
+      // 1:未登录，2:已登陆，未approve,3:已经approve,未到达上次升级时间，4:已经达到上次升级时间，未满级，5：已经升至4级满级
+      gradeList:defaultList,
+      curGradeInfo:{status:'1',level:'2',name:'BANK',levelDetail:'+3% BNB rewards',price:'',time:'24'},
+    };
+  },
+  watch: {
+    "$store.state.approved"(newValue,oldValue) {
+      this.initData()
+    },
+    "$store.state.townList"(newValue,oldValue) {
+      this.initData()
+    },
+  },
+  computed: {
+    ...mapState([
+      'account',
+      'approved',
+      'townList',
+      'townUpTime',
+      'townUpPrice',
+
+    ]),
+    upgradeBtnClass: function () {
+      const isGreen = this.curGradeInfo.status === '4' 
+      return {
+        'upgrade-btn': true, 
+        'btn': true,
+        'disabled': !isGreen,
+        'btn-dark': !isGreen,
+        'btn-green': isGreen,
+      }
+    }
+  },
+  mounted() {
+    this.initData()
   },
   methods: {
+    async initData() {
+      if (this.account) {
+        let newGradeList = []
+        for (let i=0; i<this.gradeList.length; i++) {
+          let obj = this.gradeList[i]
+          let isRemainTime = this.townUpTime[i] > moment().format('X') ? changeSecondsToHours(this.townUpTime[i] - moment().format('X')):0
+          //如果已经为4级，则不需要显示为下一级别
+          obj.level = this.townList[i] === '3' ? '4' : (isRemainTime === 0 ? parseInt(this.townList[i]*1 + 2) : parseInt(this.townList[i]*1 + 1))
+          // 3级升4级需要48小时，其余升级需要24小时
+          obj.time = isRemainTime === 0 ? (this.townList[i] === '2' ? '48':'24') : isRemainTime
+          if (!this.approved) obj.status = '2'
+          if (this.approved && isRemainTime != 0) obj.status = '3'
+          if (this.approved && isRemainTime === 0 ) obj.status = '4'
+          if (this.approved && isRemainTime === 0 && this.townList[i] === '3') obj.status = '5'
+          const nextLevel =  parseInt(this.townList[i]+1)
+          obj.price = this.townUpPrice[i]
+          newGradeList.push(obj)
+        }
+        this.gradeList = newGradeList
+        this.curGradeInfo = this.gradeList[this.curIndex]
+      }
+    },
     closeModel() {
       this.$emit("closeModel");
+    },
+    approve() {
+      approve()
+    },
+    upgradeTown() {
+      upgradeTown(this.curIndex)
+    },
+    // 上一张卡片
+    previous() {
+      let newIndex = 0
+      if (!this.gradeList.length) return
+      if (this.curIndex === 0) {
+        newIndex = this.gradeList.length - 1
+      } else {
+        newIndex = this.curIndex - 1
+      }
+      this.curIndex = newIndex
+      this.curGradeInfo = this.gradeList[this.curIndex]
+    },
+    // 下一张
+    next() {
+      let newIndex = 0
+      if (!this.gradeList.length) return
+      if ((this.curIndex + 1) === this.gradeList.length) {
+        newIndex = 0
+      } else {
+        newIndex = this.curIndex + 1
+      }
+      this.curIndex = newIndex
+      this.curGradeInfo = this.gradeList[this.curIndex]
     }
   }
 };
