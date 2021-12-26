@@ -27,12 +27,14 @@
           </div>
         </div>
       </div>
-      <div :class="fightBtnClass">FIGHT</div>
+      <div :class="fightBtnClass" @click="toFight">FIGHT</div>
     </div>
   </div>
 </template>
 
 <script>
+import { toFight } from '@/metamask/fight';
+
 export default {
   name: "FightCard",
   props: {
@@ -40,13 +42,13 @@ export default {
       type: Object,
       default: {}
     },
-    isFight:{
-      type: Boolean,
-      default: false
+    props: {
+      heroInfo:[Object,Array]
     },
   },
   data() {
     return {
+      isFight:false,
     };
   },
   computed: {
@@ -55,13 +57,18 @@ export default {
         'card-bottom': true, 
         'btn': true,
         'disabled': !this.isFight,
-        'btn-dark': !this.isFight,
         'btn-yellow': this.isFight,
       }
     }
   },
   mounted() {},
-  methods: {}
+  methods: {
+    toFight() {
+      const enemyId = this.enemyInfo.tokenId
+      const heroId = this.heroInfo.tokenId
+      toFight(heroId,enemyId)
+    }
+  }
 };
 </script>
 

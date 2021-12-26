@@ -1,6 +1,10 @@
 import store from '../store'
 import { bnbHeroPool } from './poolObject'
 import { bnbheroAddress } from './data'
+import { getBnbhBalance, getBalance } from './home'
+import { getHeroesByOwner } from './index'
+import bnbHeroAbi from '../abis/bnbHeroAbi'
+
 
 /**
  * @description: 获得myreserve所有英雄
@@ -38,7 +42,12 @@ export const getHeroDetail = async (id) => {
  * @return {*}
  */
 export const moveToSolt = async (heroId) => {
-  const pool = bnbHeroPool()
-  const isMoved = await pool.methods.takeHeroFromBag(heroId).call()
-  return isMoved
+  const { web3, account } = store.state
+  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
+  const res = await pool.methods.takeHeroFromBag(heroId).send({ from: account })
+  if (res.status) {
+    getHeroesByOwner(web3, account)
+    getBnbhBalance(web3, account)
+    getBalance(web3, account)
+  }
 }

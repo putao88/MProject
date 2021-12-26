@@ -107,7 +107,7 @@ export default {
   .card-img {
     width: 100%;
     margin: auto;
-    padding: 10px 0;
+    padding: 20px 0px;
   }
   .card-id {
     background-size: 100% 100%;

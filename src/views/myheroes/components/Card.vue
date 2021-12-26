@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="height:43px" v-if="cardInfo.status != 'open'"></div>
+    <div style="height:43px" v-if="cardInfo.status === 'pending'||cardInfo.status === 'lock'"></div>
 
     <!-- 已召唤英雄渲染 -->
     <HeroCard v-if="cardInfo.status === 'open'||cardInfo.status === 'approved'" :heroInfo="cardInfo" />
@@ -40,7 +40,6 @@
 
 <script>
 import HeroCard from "@/components/HeroCard";
-import { approve } from '@/metamask/index';
 import { createNewHero } from '@/metamask/myheroes';
 import { setApproveallHeroes, moveHeroToMyreserve } from '@/metamask/myheroes'
 import { mapState } from 'vuex'
@@ -71,8 +70,7 @@ export default {
     },
   },
   methods: {
-    async recruit () {
-      const isApprove = await approve()
+    recruit () {
       createNewHero()
     },
     toFight(tokenId) {

@@ -32,17 +32,17 @@
           <div v-show="active" class="enemy-selection fight-block-one">
             <div class="enemy-item">
               <div class="left-arrow" @click="previous('curTierIndex1','tierList1')"></div>
-              <FightCard :enemyInfo="tierList1[curTierIndex1]" :isFight="!!heroDatas.length" />
+              <FightCard :enemyInfo="tierList1[curTierIndex1]" :heroInfo="heroDatas[curHeroIndex]" />
               <div class="right-arrow" @click="next('curTierIndex1','tierList1')"></div>
             </div>
             <div class="enemy-item">
               <div class="left-arrow" @click="previous('curTierIndex2','tierList1')"></div>
-              <FightCard :enemyInfo="tierList2[curTierIndex2]" :isFight="!!heroDatas.length" />
+              <FightCard :enemyInfo="tierList2[curTierIndex2]" :heroInfo="heroDatas[curHeroIndex]" />
               <div class="right-arrow" @click="next('curTierIndex2','tierList2')"></div>
             </div>
           </div>
           <div v-show="!active" class="enemy-selection fight-block-two">
-            <BossFight  :dataSource="bossList" />
+            <BossFight  :bossList="bossList" :heroInfo="heroDatas[curHeroIndex]" />
           </div>
         </div>
       </div>
@@ -67,18 +67,18 @@ export default {
       curTierIndex1:0,
       curTierIndex2:0,
       tierList1:[
-        {id:0, name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'70%',bnb:0.00235125, xp: 100 },
-        {id:1, name:'Red Skull 2',imgurl:'@/assets/fight/card.png',power:'67%',bnb:0.0028215, xp: 110 },
-        {id:2, name:'Red Skull 3',imgurl:'@/assets/fight/card.png',power:'63%',bnb:0.00329175, xp: 120 },
+        {tokenId:0, name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'70%',bnb:0.00235125, xp: 100 },
+        {tokenId:1, name:'Red Skull 2',imgurl:'@/assets/fight/card.png',power:'67%',bnb:0.0028215, xp: 110 },
+        {tokenId:2, name:'Red Skull 3',imgurl:'@/assets/fight/card.png',power:'63%',bnb:0.00329175, xp: 120 },
       ],
       tierList2:[
-        {id:3, name:'Red Skull Archer',imgurl:'@/assets/fight/card.png',power:'59%',bnb:0.003762, xp: 130 },
-        {id:4, name:'Red Skull Assasin',imgurl:'@/assets/fight/card.png',power:'55%',bnb:0.00423225, xp: 150 },
-        {id:5, name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'51%',bnb:0.0047025, xp: 200 },
+        {tokenId:3, name:'Red Skull Archer',imgurl:'@/assets/fight/card.png',power:'59%',bnb:0.003762, xp: 130 },
+        {tokenId:4, name:'Red Skull Assasin',imgurl:'@/assets/fight/card.png',power:'55%',bnb:0.00423225, xp: 150 },
+        {tokenId:5, name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'51%',bnb:0.0047025, xp: 200 },
       ],
       bossList:[
-        {id:6,name:'Boss 2',imgurl:'@/assets/fight/card.png',power:'0%',bnb:1, xp: 2000, description:'' },
-        {id:7,name:'Zangrief',imgurl:'@/assets/fight/card.png',power:'0%',bnb:0.0172425, xp: 400, description:'Your squad spots ZANGRIEF at the stronghold gates charging towards them. Defeat Him in order to claim the stronghold once and for all!' },
+        {tokenId:6,name:'Boss 2',imgurl:'@/assets/fight/card.png',power:'0%',bnb:1, xp: 2000, description:'' },
+        {tokenId:7,name:'Zangrief',imgurl:'@/assets/fight/card.png',power:'0%',bnb:0.0172425, xp: 400, description:'Your squad spots ZANGRIEF at the stronghold gates charging towards them. Defeat Him in order to claim the stronghold once and for all!' },
       ],
     };
   },

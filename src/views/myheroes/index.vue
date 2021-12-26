@@ -65,7 +65,7 @@ export default {
           }
           // 渲染待召唤卡槽
           let level = this.townUpTime[1]  > moment().format('X') ? this.townList[1]*1 : parseInt(this.townList[1]*1+1)
-          if (this.heroDatas.length<= i && i<=parseInt(this.townList[1]*1+1)) {
+          if (this.heroDatas.length<= i && i<=level) {
             obj.status = "pending"
           }
           cardData.push(obj)

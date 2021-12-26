@@ -7,7 +7,7 @@
           <div class="arrow" @click="previous">
             <img src="@/assets/fight/left-arrow.png" alt />
           </div>
-          <div class="card-body" v-if="dataSource.length">
+          <div class="card-body" v-if="bossList.length">
             <div class="card-img">
               <img src="@/assets/fight/boss2.png" alt />
             </div>
@@ -48,7 +48,7 @@
               </div>
             </div>
           </div>
-          <div class="btn btn-dark disabled fight-btn">FIGHT</div>
+          <div :class="fightBtnClass" @click="toFight">FIGHT</div>
         </div>
       </div>
     </div>
@@ -56,49 +56,70 @@
 </template>
 
 <script>
+import { toFight } from '@/metamask/fight';
+
 export default {
   name: "BossFight",
   props: {
-    dataSource: {
+    bossList: {
       type: Array,
       default: true
-    }
+    },
+    props: {
+      heroInfo:[Object,Array]
+    },
   },
   data() {
     return {
       curItem: {},
-      curIndex: 0
+      curIndex: 0,
+      isFight: false,
     };
   },
+  computed: {
+    fightBtnClass: function () {
+      return {
+        'fight-btn': true, 
+        'btn': true,
+        'disabled': !this.isFight,
+        'btn-yellow': this.isFight,
+      }
+    }
+  },
   mounted() {
-    if (this.dataSource.length) {
-      this.curItem = this.dataSource[this.curIndex];
+    if (this.bossList.length) {
+      this.curItem = this.bossList[this.curIndex];
     }
   },
   methods: {
+    toFight() {
+      const enemyId = this.bossList[this.curIndex].tokenId
+      const heroId = this.heroInfo.tokenId
+      toFight(heroId,enemyId)
+    },
     // 上一张卡片
     previous() {
       let newIndex = 0
-      if (!this.dataSource.length) return
+      if (!this.bossList.length) return
       if (this.curIndex === 0) {
-        newIndex = this.dataSource.length - 1
+        newIndex = this.bossList.length - 1
       } else {
         newIndex = this.curIndex - 1
       }
       this.curIndex = newIndex
-      this.curItem = this.dataSource[newIndex]
+      this.curItem = this.bossList[newIndex]
     },
     // 下一张
     next() {
       let newIndex = 0
-      if (!this.dataSource.length) return
-      if ((this.curIndex + 1) === this.dataSource.length) {
+      if (!this.bossList.length) return
+      if ((this.curIndex + 1) === this.bossList.length) {
         newIndex = 0
       } else {
         newIndex = this.curIndex + 1
       }
       this.curIndex = newIndex
-      this.curItem = this.dataSource[newIndex]
+      this.curItem = this.bossList[newIndex]
     }
   }
 };
@@ -157,18 +178,6 @@ export default {
           }
         }
       }
-    }
-    .card-bottom {
-      background-image: url("~@/assets/fight/buttom.png");
-      background-size: 100% 100%;
-      background-repeat: no-repeat;
-      width: 160px;
-      margin: auto;
-      cursor: pointer;
-      border-color: #212529;
-      opacity: 0.65;
-      text-align: center;
-      line-height: 48px;
     }
     div {
       color: #ffffff;

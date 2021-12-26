@@ -17,10 +17,14 @@ import { getHeroesByOwner } from './index'
  * @return {*}
  */
 export const createNewHero = async () => {
-  // const { web3, account, approved }  = store.state
-  // if(!approved) approve()
-  // const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
-  // let result = await pool.methods.createNewHero()
+  const { web3, account }  = store.state
+  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
+  const res = await  await pool.methods.createNewHero().send({ from: account })
+  if (res.status) {
+    getHeroesByOwner(web3, account)
+    getBnbhBalance(web3, account)
+    getBalance(web3, account)
+  }
  } 
 
 /**
@@ -42,7 +46,7 @@ export const getIsApprovedForAll = async (web3,account) => {
  */
 export const setApproveallHeroes = async () => {
   const { web3, account }  = store.state
-  const pool = bnbhCharacterPool()
+  const pool =  new web3.eth.Contract(bnbhCharacterAbi, bnbhCharacter)
   const res = await pool.methods.setApprovalForAll(bnbheroAddress,true).send({ from: account })
   if (res.status) {
     getIsApprovedForAll(web3, account)
@@ -61,7 +65,9 @@ export const moveHeroToMyreserve = async (heroId) => {
   const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
   const res = await pool.methods.moveHeroToBag(heroId).send({ from: account })
   if (res.status) {
-    await getHeroesByOwner(web3, account)
+    getHeroesByOwner(web3, account)
+    getBnbhBalance(web3, account)
+    getBalance(web3, account)
   }
 }
 
@@ -75,7 +81,9 @@ export const unLock = async (heroId) => {
   const pool =  new web3.eth.Contract(bnbhCharacterAbi, bnbhCharacter)
   const res = await pool.methods.unLockLevel(heroId).send({ from: account })
   if (res.status) {
-    await getHeroesByOwner(web3, account)
+    getHeroesByOwner(web3, account)
+    getBnbhBalance(web3, account)
+    getBalance(web3, account)
   }
 }
 
