@@ -4,14 +4,14 @@
     <div class="page-title">Chapter 1: Enemy at the gates</div>
     <div class="fight-body-wrap">
       <!-- 自选英雄 -->
-      <div v-if="heroDatas.length" class="hero-container-wrap">
+      <div v-if="heroDataList.length" class="hero-container-wrap">
         <div class="choose-title">Choose Hero</div>
         <div class="hero-container">
-          <div class="left-arrow"  @click="previous('curHeroIndex','heroDatas')"></div>
+          <div class="left-arrow"  @click="previous('curHeroIndex','heroDataList')"></div>
           <div class="hero-item" style="min-width:300px;height:620px">
-            <HeroCard :heroInfo="heroDatas[curHeroIndex]" />
+            <HeroCard :heroInfo="heroDataList[curHeroIndex]" />
           </div>
-          <div class="right-arrow" @click="next('curHeroIndex','heroDatas')"></div>
+          <div class="right-arrow" @click="next('curHeroIndex','heroDataList')"></div>
         </div>
       </div>
 
@@ -32,17 +32,17 @@
           <div v-show="active" class="enemy-selection fight-block-one">
             <div class="enemy-item">
               <div class="left-arrow" @click="previous('curTierIndex1','tierList1')"></div>
-              <FightCard :enemyInfo="tierList1[curTierIndex1]" :heroInfo="heroDatas[curHeroIndex]" />
+              <FightCard :enemyInfo="tierList1[curTierIndex1]" :heroInfo="heroDataList[curHeroIndex]" />
               <div class="right-arrow" @click="next('curTierIndex1','tierList1')"></div>
             </div>
             <div class="enemy-item">
               <div class="left-arrow" @click="previous('curTierIndex2','tierList1')"></div>
-              <FightCard :enemyInfo="tierList2[curTierIndex2]" :heroInfo="heroDatas[curHeroIndex]" />
+              <FightCard :enemyInfo="tierList2[curTierIndex2]" :heroInfo="heroDataList[curHeroIndex]" />
               <div class="right-arrow" @click="next('curTierIndex2','tierList2')"></div>
             </div>
           </div>
           <div v-show="!active" class="enemy-selection fight-block-two">
-            <BossFight  :bossList="bossList" :heroInfo="heroDatas[curHeroIndex]" />
+            <BossFight  :bossList="bossList" :heroInfo="heroDataList[curHeroIndex]" />
           </div>
         </div>
       </div>
@@ -66,6 +66,7 @@ export default {
       curHeroIndex:0,
       curTierIndex1:0,
       curTierIndex2:0,
+      heroDataList:[],
       tierList1:[
         {tokenId:0, name:'Red Skull 1',imgurl:'@/assets/fight/card.png',power:'70%',bnb:0.00235125, xp: 100 },
         {tokenId:1, name:'Red Skull 2',imgurl:'@/assets/fight/card.png',power:'67%',bnb:0.0028215, xp: 110 },
@@ -87,7 +88,7 @@ export default {
       'heroDatas'
     ]),
     unlockBtnClass: function () {
-      const isYellow = this.heroDatas[this.curHeroIndex].xp > (this.heroDatas[this.curHeroIndex].level*1000+999)
+      const isYellow = this.heroDataList[this.curHeroIndex].xp > (this.heroDataList[this.curHeroIndex].level*1000+999)
       return {
         'unlock-btn': true, 
         'btn': true,
@@ -98,14 +99,19 @@ export default {
     }
   },
   watch: {
-    "$store.state.heroDatas"(newValue,oldValue) {
-      this.initCardData()
+    "$store.state.heroDatas": {
+      handler(newValue,oldValue) {
+        this.heroDataList = newValue.filter(item => item.arrivalTime === '0')
+      },
+      immediate: true,
+      deep: true,
+
     },
   },
   mounted() {
     const tokenId = this.$route.query.tokenId || -1
-    for (let i=0; i< this.heroDatas.length; i++) {
-      if (tokenId === this.heroDatas[i].tokenId) {
+    for (let i=0; i< this.heroDataList.length; i++) {
+      if (tokenId === this.heroDataList[i].tokenId) {
         this.curHeroIndex = i
         return
       }
@@ -115,8 +121,6 @@ export default {
   methods: {
     switchTo(active) {
       this.active = active;
-    },
-    initCardData() {
     },
     // 上一张卡片
     previous(key,list) {

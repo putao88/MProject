@@ -42,22 +42,21 @@ export default {
       type: Object,
       default: {}
     },
-    props: {
-      heroInfo:[Object,Array]
-    },
+    heroInfo:[Object,Array]
   },
   data() {
     return {
-      isFight:false,
     };
   },
   computed: {
     fightBtnClass: function () {
+      // 当英雄的血量大于200时，就可以和普通敌人打仗
+      const isFight = this.heroInfo && this.heroInfo.hp && parseInt(this.heroInfo.hp) >= 200
       return {
         'card-bottom': true, 
         'btn': true,
         'btn-yellow': true,
-        'disabled': !this.isFight,
+        'disabled': !isFight,
       }
     }
   },

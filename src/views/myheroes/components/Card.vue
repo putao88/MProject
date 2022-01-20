@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div style="height:43px" v-if="cardInfo.status === 'pending'||cardInfo.status === 'lock'"></div>
+    <div style="height:43px" v-if="cardInfo.status === 'expedite' || cardInfo.status === 'recruit' || cardInfo.status === 'lock'"></div>
 
     <!-- 已召唤英雄渲染 -->
-    <HeroCard v-if="cardInfo.status === 'open'||cardInfo.status === 'approved'" :heroInfo="cardInfo" />
+    <HeroCard v-if="cardInfo.status === 'open'|| cardInfo.status === 'approved'" :heroInfo="cardInfo" />
 
     <!-- 渲染英雄底部按钮 -->
     <div v-if="cardInfo.status === 'open'||cardInfo.status === 'approved'">
@@ -19,8 +19,14 @@
       </div>
     </div>
 
+    <!-- 已经召唤英雄，还在冷却期 -->
+    <div style="text-align:center" v-if="cardInfo.status === 'expedite'">
+      <img src="@/assets/common/card.png" class="hero-card-img"/>
+      <div class="mt-5 btn btn-yellow" @click="expedite(cardInfo.tokenId)">Expedite</div>
+    </div>
+
     <!-- 已经解锁卡槽，待召唤 -->
-    <div style="text-align:center" v-if="cardInfo.status === 'pending'">
+    <div style="text-align:center" v-if="cardInfo.status === 'recruit'">
       <img src="@/assets/common/card.png" class="hero-card-img"/>
       <div :class="recruitBtnClass" @click="recruit">Recruit</div>
     </div>
@@ -40,7 +46,7 @@
 
 <script>
 import HeroCard from "@/components/HeroCard";
-import { createNewHero } from '@/metamask/myheroes';
+import { createNewHero, ExpeditedHero } from '@/metamask/myheroes';
 import { setApproveallHeroes, moveHeroToMyreserve } from '@/metamask/myheroes'
 import { mapState } from 'vuex'
 export default {
@@ -70,8 +76,11 @@ export default {
     },
   },
   methods: {
-    recruit () {
+    recruit() {
       createNewHero()
+    },
+    expedite(tokenId) {
+      ExpeditedHero(tokenId)
     },
     toFight(tokenId) {
        this.$router.push({

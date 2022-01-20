@@ -65,24 +65,23 @@ export default {
       type: Array,
       default: true
     },
-    props: {
-      heroInfo:[Object,Array]
-    },
+    heroInfo:[Object,Array]
   },
   data() {
     return {
       curItem: {},
       curIndex: 0,
-      isFight: false,
     };
   },
   computed: {
     fightBtnClass: function () {
+       // 当英雄的血量大于200时，就可以和boss打仗
+      const isFight = this.heroInfo && this.heroInfo.hp && this.heroInfo.hp >= 400
       return {
         'fight-btn': true, 
         'btn': true,
         'btn-yellow': true,
-        'disabled': !this.isFight,
+        'disabled': !isFight,
       }
     }
   },

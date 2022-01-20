@@ -22,8 +22,8 @@ export default {
   data() {
     return {
       cardList:[
-        {key:'1',status:'pending',townLevel:'1'},
-        {key:'2',status:'pending',townLevel:'1'},
+        {key:'1',status:'recruit',townLevel:'1'},
+        {key:'2',status:'recruit',townLevel:'1'},
         {key:'3',status:'lock',townLevel:'2'},
         {key:'4',status:'lock',townLevel:'3'},
         {key:'5',status:'lock',townLevel:'4'},
@@ -54,19 +54,20 @@ export default {
     async initCardData() {
       if (this.account) {
         let cardData = []
-        // 卡槽总共四种状态：lock:锁定；pending:等待召唤英雄； pengding:有英雄了待approved, approved:英雄已经approved
+        // 卡槽总共五种状态：lock:锁定； recruit:等待召唤英雄； expedite:已经召唤英雄，待加速回到战场（冷却期）； open:有英雄，且英雄度过了冷却期，待approved, approved:英雄已经approved
         for (let i=0; i<this.cardList.length; i++) {
           let obj = this.cardList[i]
           // 渲染英雄
           if (i<this.heroDatas.length) {
             obj = {...obj,...this.heroDatas[i]}
-            obj.status = "open"
-            if (this.isApprovedForAll) obj.status = "approved"
+            // expedite判断条件：当英雄的arrivalTime不等于0，那么英雄就在冷却期
+            obj.status = obj.arrivalTime != '0' ? 'expedite':"open"
+            if (this.isApprovedForAll && obj.arrivalTime === '0') obj.status = "approved"
           }
           // 渲染待召唤卡槽
           let level = this.townUpTime[1]  > moment().format('X') ? this.townList[1]*1 : parseInt(this.townList[1]*1+1)
           if (this.heroDatas.length<= i && i<=level) {
-            obj.status = "pending"
+            obj.status = "recruit"
           }
           cardData.push(obj)
         }

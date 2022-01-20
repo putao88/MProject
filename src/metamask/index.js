@@ -172,7 +172,7 @@ export const getTownsOfPlayer = async (web3, account) => {
     //获取每个城市升级价格
     let price = (townsOfPlayer[i].lastUpgradedTimeStamp > moment().format('X') || townsOfPlayer[i].level === '3' )
                 ?  '0'
-                : await getTownUpgradePrice(i,parseInt(townsOfPlayer[i].level+1))
+                : await getTownUpgradePrice(i,parseInt(townsOfPlayer[i].level*1+1))
     townUpPrice.push(price)
   }
   store.commit('SET_TOWNLIST',townList)

@@ -25,6 +25,22 @@ export const createNewHero = async () => {
     getBnbhBalance(web3, account)
     getBalance(web3, account)
   }
+}
+
+/**
+ * @description: 加速英雄到达战场
+ * @param {*}
+ * @return {*}
+ */
+export const ExpeditedHero = async (tokenId) => {
+  const { web3, account }  = store.state
+  const pool = new web3.eth.Contract(bnbHeroAbi, bnbheroAddress)
+  const res = await  await pool.methods.expediteHero(tokenId).send({ from: account })
+  if (res.status) {
+    getHeroesByOwner(web3, account)
+    getBnbhBalance(web3, account)
+    getBalance(web3, account)
+  }
  } 
 
 /**
